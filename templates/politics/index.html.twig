@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de Confidentialité{% endblock %}
+
+{% block body %}
+    <h2 class="text-center">Politique de Confidentialité</h2>
+    {% if politique %}
+        <div>
+            <!-- Affichez ici les propriétés de l'objet politique -->
+            <p>Contenu: {{ politique.Pol | raw}}</p>
+        </div>
+    {% else %}
+        <p>Politique de confidentialité non trouvée.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ChoiceRegisterController!{% endblock %}
+
+{% block body %}
+<h1> Vous etes ? </h1>
+<div class="row"> 
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Un locataire ?</h5>
+        <a href="/register" class="btn btn-primary">Cliquez-ici</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Une agence ?</h5>
+        <a href="/registeragence" class="btn btn-primary">Cliquez-ici</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

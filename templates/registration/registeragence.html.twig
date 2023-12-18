@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+
+	{{ form_start(registrationForm) }}
+	{{ form_errors(registrationForm) }}
+
+	<!-- Champ Email -->
+	<div>
+		{{ form_label(registrationForm.email) }}
+		{{ form_widget(registrationForm.email) }}
+		{{ form_errors(registrationForm.email) }}
+	</div>
+
+	<div>
+		{{ form_label(registrationForm.plainPassword) }}
+		{{ form_widget(registrationForm.plainPassword) }}
+		{{ form_errors(registrationForm.plainPassword) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.telephone) }}
+		{{ form_widget(registrationForm.telephone) }}
+		{{ form_errors(registrationForm.telephone) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.address) }}
+		{{ form_widget(registrationForm.address) }}
+		{{ form_errors(registrationForm.address) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.nom_agence) }}
+		{{ form_widget(registrationForm.nom_agence) }}
+		{{ form_errors(registrationForm.nom_agence) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.numero_rue) }}
+		{{ form_widget(registrationForm.numero_rue) }}
+		{{ form_errors(registrationForm.numero_rue) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.nom_rue) }}
+		{{ form_widget(registrationForm.nom_rue) }}
+		{{ form_errors(registrationForm.nom_rue) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.code_postal) }}
+		{{ form_widget(registrationForm.code_postal) }}
+		{{ form_errors(registrationForm.code_postal) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.ville) }}
+		{{ form_widget(registrationForm.ville) }}
+		{{ form_errors(registrationForm.ville) }}
+	</div>
+	<div>
+		{{ form_label(registrationForm.carte_professionnelle) }}
+		{{ form_widget(registrationForm.carte_professionnelle) }}
+		{{ form_errors(registrationForm.carte_professionnelle) }}
+	</div>
+    <div>
+		{{ form_label(registrationForm.siren) }}
+		{{ form_widget(registrationForm.siren) }}
+		{{ form_errors(registrationForm.siren) }}
+	</div>
+    <div>
+		{{ form_label(registrationForm.siret) }}
+		{{ form_widget(registrationForm.siret) }}
+		{{ form_errors(registrationForm.siret) }}
+	</div>
+    <div>
+		{{ form_label(registrationForm.kbis) }}
+		{{ form_widget(registrationForm.kbis) }}
+		{{ form_errors(registrationForm.kbis) }}
+	</div>
+	<!-- Champ Mot de Passe -->
+
+
+	<!-- Champ Téléphone -->
+
+
+	<!-- Ajoutez d'autres champs ici -->
+		<button type="submit"> S'inscrire</button>
+	{{ form_end(registrationForm) }}
+{% endblock %}
