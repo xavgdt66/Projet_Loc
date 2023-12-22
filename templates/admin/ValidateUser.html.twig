@@ -1,0 +1,34 @@
+{# ValidateUser.html.twig #}
+{% extends  "@EasyAdmin/page/content.html.twig" %}
+
+
+{% block title %}Validation d'utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Validation d'utilisateur</h1>
+
+    {% if app.flashes('success') %}
+        <div class="alert alert-success">
+            {% for message in app.flashes('success') %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if app.flashes('error') %}
+        <div class="alert alert-danger">
+            {% for message in app.flashes('error') %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div>
+        <h2>Informations de l'utilisateur</h2>
+      
+        <p><strong>Email :</strong> {{ user.email }}</p>
+        <p><strong>Statut de vérification :</strong> {{ user.isVerified ? 'Validé' : 'Non validé' }}</p>
+        <!-- Vous pouvez ajouter plus d'informations selon vos besoins -->
+    </div>
+
+{% endblock %}

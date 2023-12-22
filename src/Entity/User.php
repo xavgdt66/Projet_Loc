@@ -30,55 +30,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:255, nullable:true)]
     private ?string $first_name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:255, nullable:true)]
     private ?string $last_name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $presentation = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $employement_status = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $net_income = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $guarantee = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $nom_agence = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $numero_rue = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $nom_rue = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $code_postal = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $ville = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $carte_professionnelle = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $siren = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $siret = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $kbis = null;
 
     public function getId(): ?int
@@ -155,7 +155,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->isVerified;
     }
-
+   
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;

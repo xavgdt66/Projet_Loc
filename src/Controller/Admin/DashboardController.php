@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\Politiquedeconfidentilaite;
+use App\Entity\User;
+
 // Ajoutez les use nécessaires pour le UserRepository ou l'EntityManager
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
@@ -42,6 +44,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToRoute('Tableau de Bord Personnalisé', 'fa fa-dashboard', 'admin_custom_dashboard');
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
 
          yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
     }

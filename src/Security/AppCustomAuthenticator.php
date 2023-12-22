@@ -43,14 +43,18 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-{
-    if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-        return new RedirectResponse($targetPath);
+    {
+        $user = $token->getUser();
+    
+        // Vérifiez si l'utilisateur est validé
+        if ($user instanceof \App\Entity\User && !$user->isVerified()) {
+            // Rediriger vers la page de vérification du compte
+            return new RedirectResponse($this->urlGenerator->generate('compte_verification'));
+        }
+    
+        // Redirection par défaut après une connexion réussie
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
-
-    // Redirection par défaut après une connexion réussie
-    return new RedirectResponse($this->urlGenerator->generate('app_home'));
-}
 
 
     protected function getLoginUrl(Request $request): string
