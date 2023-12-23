@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment ça marche ?{% endblock %}
+
+{% block body %}
+    <h2 class="text-center">Comment ça marche ?</h2>
+    {% if Commentçamarche %}
+        <div>
+            <!-- Affichez ici les propriétés de l'objet politique -->
+            <p>Contenu: {{ Commentçamarche.content | raw}}</p>
+        </div>
+    {% else %}
+        <p>Comment ça marche non trouvée.</p>
+    {% endif %}
+{% endblock %}

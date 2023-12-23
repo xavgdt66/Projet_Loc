@@ -1,20 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MentionsLegalesController!{% endblock %}
+{% block title %}Mentions légales{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/xavier/Desktop/Projet/location/src/Controller/MentionsLegalesController.php'|file_link(0) }}">src/Controller/MentionsLegalesController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/xavier/Desktop/Projet/location/templates/mentions_legales/index.html.twig'|file_link(0) }}">templates/mentions_legales/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <h2 class="text-center">mentions légales</h2>
+    {% if Mentionlegale %}
+        <div>
+            <!-- Affichez ici les propriétés de l'objet politique -->
+            <p>Contenu: {{ Mentionlegale.mentionlegale | raw}}</p>
+        </div>
+    {% else %}
+        <p>mentions légales non trouvée.</p>
+    {% endif %}
 {% endblock %}
