@@ -81,6 +81,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type:"string", length:555, nullable:true)]
     private ?string $kbis = null;
 
+    #[ORM\Column(type:"string", length:555, nullable:true)]
+    private $profile_picture;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -365,5 +369,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->kbis = $kbis;
 
         return $this;
+    }
+
+   
+
+    public function setprofile_picture(string $profile_picture): static
+    {
+        $this->profile_picture = $profile_picture;
+
+        return $this;
+    }
+
+    public function getprofile_picture(): ?string
+    {
+        return $this->profile_picture;
     }
 }

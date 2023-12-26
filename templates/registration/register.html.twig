@@ -13,6 +13,16 @@
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.presentation) }}
+                {{ form_row(registrationForm.first_name) }}
+                {{ form_row(registrationForm.last_name) }}
+                {{ form_row(registrationForm.telephone) }}
+                {{ form_row(registrationForm.address) }}
+                {{ form_row(registrationForm.employement_status) }}
+                {{ form_row(registrationForm.net_income) }}
+                {{ form_row(registrationForm.guarantee) }}
+                {{ form_row(registrationForm.profile_picture) }}
+
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
