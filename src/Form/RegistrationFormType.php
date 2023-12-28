@@ -11,6 +11,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -18,15 +21,50 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
+            /*->add('profile_picture', VichFileType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true,
+                'label' => 'Choisir un fichier',
+            ])*/
+            ->add('brochure', FileType::class, [
+                'label' => 'Brochure (PNG file)',
+            
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+            
+                // make it optional so you don't have to re-upload the file
+                // every time you edit the Product details
+                'required' => false,
+            
+                // unmapped fields can't define their validation using attributes
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PNG image',
+                    ])
+                ],
+            ])
+            
+
             ->add('presentation')
             ->add('first_name')
             ->add('last_name')
             ->add('telephone')
             ->add('address')
-            ->add('employement_status')
+            ->add('employement_status', ChoiceType::class, [
+                'choices'  => [
+                    'Masffdybe' => null,
+                    'Ydfsfdses' => true,
+                    'Nfddfsfo' => false,
+                ],
+            ])
             ->add('net_income')
             ->add('guarantee')
-            ->add('profile_picture')
 
             ->add('agreeTerms', CheckboxType::class, [
                                 'mapped' => false,

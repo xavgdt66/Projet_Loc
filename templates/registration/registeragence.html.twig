@@ -1,90 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription
+{% block title %}Inscription Agence
 {% endblock %}
 
 {% block body %}
-	{% for flash_error in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-	{% endfor %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				{% for flash_error in app.flashes('verify_email_error') %}
+					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+				{% endfor %}
 
-	{{ form_start(registrationForm) }}
-	{{ form_errors(registrationForm) }}
-
-	<!-- Champ Email -->
-	<div>
-		{{ form_label(registrationForm.email) }}
-		{{ form_widget(registrationForm.email) }}
-		{{ form_errors(registrationForm.email) }}
-	</div>
-
-	<div>
-		{{ form_label(registrationForm.plainPassword) }}
-		{{ form_widget(registrationForm.plainPassword) }}
-		{{ form_errors(registrationForm.plainPassword) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.telephone) }}
-		{{ form_widget(registrationForm.telephone) }}
-		{{ form_errors(registrationForm.telephone) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.address) }}
-		{{ form_widget(registrationForm.address) }}
-		{{ form_errors(registrationForm.address) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.nom_agence) }}
-		{{ form_widget(registrationForm.nom_agence) }}
-		{{ form_errors(registrationForm.nom_agence) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.numero_rue) }}
-		{{ form_widget(registrationForm.numero_rue) }}
-		{{ form_errors(registrationForm.numero_rue) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.nom_rue) }}
-		{{ form_widget(registrationForm.nom_rue) }}
-		{{ form_errors(registrationForm.nom_rue) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.code_postal) }}
-		{{ form_widget(registrationForm.code_postal) }}
-		{{ form_errors(registrationForm.code_postal) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.ville) }}
-		{{ form_widget(registrationForm.ville) }}
-		{{ form_errors(registrationForm.ville) }}
-	</div>
-	<div>
-		{{ form_label(registrationForm.carte_professionnelle) }}
-		{{ form_widget(registrationForm.carte_professionnelle) }}
-		{{ form_errors(registrationForm.carte_professionnelle) }}
-	</div>
-    <div>
-		{{ form_label(registrationForm.siren) }}
-		{{ form_widget(registrationForm.siren) }}
-		{{ form_errors(registrationForm.siren) }}
-	</div>
-    <div>
-		{{ form_label(registrationForm.siret) }}
-		{{ form_widget(registrationForm.siret) }}
-		{{ form_errors(registrationForm.siret) }}
-	</div>
-    <div>
-		{{ form_label(registrationForm.kbis) }}
-		{{ form_widget(registrationForm.kbis) }}
-		{{ form_errors(registrationForm.kbis) }}
-	</div>
-	<!-- Champ Mot de Passe -->
+				<h1 class="text-center mb-4">Inscription agence</h1>
+				{{ form_errors(registrationForm) }}
 
 
-	<!-- Champ Téléphone -->
+				{{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
+
+				{{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.plainPassword, {
+                    'label': 'Password',
+                    'attr': {'class': 'form-control'}
+                }) }}
 
 
-	<!-- Ajoutez d'autres champs ici -->
-		<button type="submit"> S'inscrire</button>
-	{{ form_end(registrationForm) }}
+				{{ form_row(registrationForm.telephone, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.address, {'attr': {'class': 'form-control'}}) }}
+
+				{{ form_row(registrationForm.nom_agence, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.numero_rue, {'attr': {'class': 'form-control'}}) }}
+
+				{{ form_row(registrationForm.nom_rue, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.code_postal, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.ville, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.carte_professionnelle, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.siren, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.siret, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.kbis, {'attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'form-check'}}) }}
+
+				
+
+				<!-- Submit Button -->
+				<div class="d-grid gap-2">
+					<button type="submit" class="btn btn-primary btn-block">Register</button>
+				</div>
+
+				{{ form_end(registrationForm) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -7,7 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -15,7 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]    
     private ?string $email = null;
 
     #[ORM\Column]
@@ -30,59 +40,202 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\Column(type:"string", length:255, nullable:true)]
-    private ?string $first_name = null;
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Votre prénom doit comporter au moins 2 caractères',
+        maxMessage: 'Votre prénom ne peut pas contenir plus de 50 caractères',
+    )]
+    private ?string $first_name;
 
-    #[ORM\Column(type:"string", length:255, nullable:true)]
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Votre nom doit comporter au moins 2 caractères',
+        maxMessage: 'Votre nom ne peut pas contenir plus de 50 caractères',
+    )]
     private ?string $last_name = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
-    private ?string $telephone = null;
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{1,10}$/',
+        message: 'Le numéro de téléphone doit être composé de 10 chiffres.'
+    )]
+    private ?int $telephone = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 2,
+        max: 1000,
+        minMessage: 'Votre adresse doit comporter au moins 2 caractères',
+        maxMessage: 'Votre adressse ne peut pas contenir plus de 50 caractères',
+    )]
     private ?string $address = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 100,
+        max: 10000,
+        minMessage: 'Votre présenation doit comporter au moins 1000 caractères',
+        maxMessage: 'Votre présentation ne peut pas contenir plus de 10000 caractères',
+    )]
     private ?string $presentation = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $employement_status = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
-    private ?string $net_income = null;
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{1,10}$/',
+        message: 'Renseignez votre salaire au mois'
+    )]
+    private ?int $net_income = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+
+    
+
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $guarantee = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+
+
+
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: 'Le nom de votre agence doit comporter au moins 2 caractères',
+        maxMessage: 'Le nom de votre agence ne peut pas contenir plus de 100 caractères',
+    )]
     private ?string $nom_agence = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{4}$/',
+        message: 'Le numéro de rue doit être composé de 1 ou chiffres.'
+    )]
     private ?string $numero_rue = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $nom_rue = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{5}$/',
+        message: 'Le code postal doit être composé de 5 chiffres.'
+    )]
     private ?string $code_postal = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 2,
+        max: 60,
+        minMessage: 'Le nom de votre ville doit comporter au moins 2 caractères',
+        maxMessage: 'Le nom de votre ville ne peut pas contenir plus de 60 caractères',
+    )]
     private ?string $ville = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{17}$/',
+        message: 'Le numéro de carte professionnelle doit être composé de 17 chiffres.'
+    )]
     private ?string $carte_professionnelle = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+
+
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{9}$/',
+        message: 'Le numéro siren doit être composé de 9 chiffres.'
+    )]
     private ?string $siren = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
-    private ?string $siret = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
+    #[Assert\Type('integer')]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{14}$/',
+        message: 'Le numéro SIRET doit être composé de 14 chiffres.'
+    )]
+    private ?int $siret = null;
+
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
 
-    #[ORM\Column(type:"string", length:555, nullable:true)]
-    private $profile_picture;
+
+
+
+
+    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "imageProfile", size: "imageSize")]
+    private ?File $fichierImage;
+
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
+    private $profile_picture; # stock dans la bdd 
+
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private ?\DateTimeImmutable $updatedAt = null;
+
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $fichierImage
+     */
+    public function setfichierImage(?File $fichierImage = null): void
+    {
+        $this->fichierImage = $fichierImage;
+
+        if (null !== $fichierImage) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getfichierImage(): ?File
+    {
+        return $this->fichierImage;
+    }
+
+    public function setprofilepicture(?string $profile_picture): void
+    {
+        $this->profile_picture = $profile_picture;
+    }
+
+    public function getprofilepicture(): ?string
+    {
+        return $this->profile_picture;
+    }
+
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
+
+
+
+
 
 
     public function getId(): ?int
@@ -159,7 +312,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->isVerified;
     }
-   
+
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
@@ -371,7 +524,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-   
+
 
     public function setprofile_picture(string $profile_picture): static
     {

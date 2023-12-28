@@ -51,7 +51,7 @@ class RegistrationAgenceFormType extends AbstractType
                 'attr' => ['class' => 'tinymce'],
 
             ])
-            ->add('siren', TextType::class, [
+            ->add('siren', TextType::class, [ 
                 'attr' => ['class' => 'tinymce'],
 
             ])

@@ -19,3 +19,4 @@ class ProfileController extends AbstractController
         ]);
     }
 }
+ 
