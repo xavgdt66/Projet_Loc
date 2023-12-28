@@ -23,17 +23,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
-    )]    
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]    
+    #[ORM\Column(type: "string", length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -41,149 +37,92 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     #[Assert\Type('string')]
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-        minMessage: 'Votre prénom doit comporter au moins 2 caractères',
-        maxMessage: 'Votre prénom ne peut pas contenir plus de 50 caractères',
-    )]
-    private ?string $first_name;
+    #[Assert\Length(min: 2, max: 50)]
+    #[ORM\Column(type: "string", length: 50)]
+    private ?string $first_name = null;
 
     #[Assert\Type('string')]
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-        minMessage: 'Votre nom doit comporter au moins 2 caractères',
-        maxMessage: 'Votre nom ne peut pas contenir plus de 50 caractères',
-    )]
+    #[Assert\Length(min: 2, max: 50)]
+    #[ORM\Column(type: "string", length: 50)]
     private ?string $last_name = null;
 
     #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{1,10}$/',
-        message: 'Le numéro de téléphone doit être composé de 10 chiffres.'
-    )]
+    #[Assert\Regex(pattern: '/^[0-9]{1,10}$/')]
+    #[ORM\Column(type: "integer")]
     private ?int $telephone = null;
 
     #[Assert\Type('string')]
-    #[Assert\Length(
-        min: 2,
-        max: 1000,
-        minMessage: 'Votre adresse doit comporter au moins 2 caractères',
-        maxMessage: 'Votre adressse ne peut pas contenir plus de 50 caractères',
-    )]
+    #[Assert\Length(min: 2, max: 1000)]
+    #[ORM\Column(type: "string", length: 1000)]
     private ?string $address = null;
 
     #[Assert\Type('string')]
-    #[Assert\Length(
-        min: 100,
-        max: 10000,
-        minMessage: 'Votre présenation doit comporter au moins 1000 caractères',
-        maxMessage: 'Votre présentation ne peut pas contenir plus de 10000 caractères',
-    )]
+    #[Assert\Length(min: 100, max: 10000)]
+    #[ORM\Column(type: "string", length: 1000)]
     private ?string $presentation = null;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $employement_status = null;
 
     #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{1,10}$/',
-        message: 'Renseignez votre salaire au mois'
-    )]
+    #[Assert\Regex(pattern: '/^[0-9]{1,10}$/')]
+    #[ORM\Column(type: "integer")]
     private ?int $net_income = null;
-
-
-    
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $guarantee = null;
 
-
-
-
     #[Assert\Type('string')]
-    #[Assert\Length(
-        min: 2,
-        max: 100,
-        minMessage: 'Le nom de votre agence doit comporter au moins 2 caractères',
-        maxMessage: 'Le nom de votre agence ne peut pas contenir plus de 100 caractères',
-    )]
+    #[Assert\Length(min: 2, max: 100)]
+    #[ORM\Column(type: "string", length: 100, nullable: true)]
     private ?string $nom_agence = null;
 
     #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{4}$/',
-        message: 'Le numéro de rue doit être composé de 1 ou chiffres.'
-    )]
-    private ?string $numero_rue = null;
+    #[Assert\Regex(pattern: '/^[0-9]{4}$/')]
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $numero_rue = null;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $nom_rue = null;
 
     #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{5}$/',
-        message: 'Le code postal doit être composé de 5 chiffres.'
-    )]
-    private ?string $code_postal = null;
-
+    #[Assert\Regex(pattern: '/^[0-9]{5}$/')]
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $code_postal = null;
 
     #[Assert\Type('string')]
-    #[Assert\Length(
-        min: 2,
-        max: 60,
-        minMessage: 'Le nom de votre ville doit comporter au moins 2 caractères',
-        maxMessage: 'Le nom de votre ville ne peut pas contenir plus de 60 caractères',
-    )]
+    #[Assert\Length(min: 2, max: 60)]
+    #[ORM\Column(type: "string", length: 60, nullable: true)]
     private ?string $ville = null;
 
+    #[Assert\Type('integer')]
+    #[Assert\Regex(pattern: '/^[0-9]{17}$/')]
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $carte_professionnelle = null;
 
     #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{17}$/',
-        message: 'Le numéro de carte professionnelle doit être composé de 17 chiffres.'
-    )]
-    private ?string $carte_professionnelle = null;
-
-
+    #[Assert\Regex(pattern: '/^[0-9]{9}$/')]
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $siren = null;
 
     #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{9}$/',
-        message: 'Le numéro siren doit être composé de 9 chiffres.'
-    )]
-    private ?string $siren = null;
-
-
-    #[Assert\Type('integer')]
-    #[Assert\Regex(
-        pattern: '/^[0-9]{14}$/',
-        message: 'Le numéro SIRET doit être composé de 14 chiffres.'
-    )]
+    #[Assert\Regex(pattern: '/^[0-9]{14}$/')]
+    #[ORM\Column(type: "integer", nullable: true)]
     private ?int $siret = null;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
 
-
-
-
-
     #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "imageProfile", size: "imageSize")]
     private ?File $fichierImage;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private $profile_picture; # stock dans la bdd 
-
+    private $profile_picture; 
 
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
 
@@ -537,4 +476,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->profile_picture;
     }
+
+    /**
+ * @return \DateTimeImmutable|null
+ */
+public function getUpdatedAt(): ?\DateTimeImmutable
+{
+    return $this->updatedAt;
+}
 }
