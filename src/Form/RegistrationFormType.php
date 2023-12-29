@@ -58,9 +58,18 @@ class RegistrationFormType extends AbstractType
             ->add('address')
             ->add('employement_status', ChoiceType::class, [
                 'choices'  => [
-                    'Masffdybe' => null,
-                    'Ydfsfdses' => true,
-                    'Nfddfsfo' => false,
+                    "CDI (hors période d'essai)" => null,
+                    "CDI (en période d'essai)" => true,
+                    'CDD' => false,
+                    "Intérimaire" => null,
+                    "Indépendant / Freelance" => true,
+                    'Fonctionnaire' => false,
+                    "Sans emploi" => null,
+                    "Chômeur·se" => true,
+                    'Retraité·e' => false,
+                    "Étudiant·e" => null,
+                    "Alternant·e" => true,
+                    'Stagiaire' => false,
                 ],
             ])
             ->add('net_income')
