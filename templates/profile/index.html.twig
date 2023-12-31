@@ -15,12 +15,12 @@
           <div class="card-body text-center">
           
 
+<img src="{{ asset('images/products/' ~ user.getProfilePicture()) }}"
+     alt="avatar"
+     class="profile-picture">
 
-<img src="/public/images/products/<?php echo htmlspecialchars($user->getProfilePicture()); ?>" 
-     alt="avatar" 
-     class="rounded-circle img-fluid" 
-     style="width: 150px;">
 
+  
 
           
             <h5 class="my-3">John Smith</h5>
@@ -183,4 +183,13 @@
     </div>
   </div>
 </section>
+<style>
+    .profile-picture {
+        width: 150px; /* Définissez la largeur souhaitée */
+        height: 150px; /* Hauteur égale à la largeur pour un carré */
+        border-radius: 10%; /* Bords arrondis */
+        object-fit: cover; /* Conserve les proportions de l'image */
+    }
+</style>
+
 {% endblock %}

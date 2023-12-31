@@ -23,7 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]    
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
     #[ORM\Column(type: "string", length: 180, unique: true)]
     private ?string $email = null;
 
@@ -36,10 +36,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[Assert\Type('string')]
+    /* #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 50)]
-    #[ORM\Column(type: "string", length: 50)]
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    private ?string $first_name = null;*/
+
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
     private ?string $first_name = null;
+
+
 
     #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 50)]
@@ -121,10 +126,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
     private ?File $fichierImage;
-    
+
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $profile_picture = null;
-    
+
 
 
 
@@ -140,7 +145,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
 
-     /**
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $brochureFilename = null;
@@ -509,49 +514,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
- * @return \DateTimeImmutable|null
- */
-public function getUpdatedAt(): ?\DateTimeImmutable
-{
-    return $this->updatedAt;
-}
+     * @return \DateTimeImmutable|null
+     */
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
 
 
-// Function qui permet de transformer cdi_outside_trial en CDI (hors période d’essai) pour la rendue Twig de profile/index.html.twig
-// Car sinon c'est cdi_outside_trial qui est afficher 
-// Pour afficher sur twig {{ user.readableEmploymentStatus }}
-public function getReadableEmploymentStatus(): string {
-    $statusMappings = [
-        'cdi_outside_trial' => 'CDI (hors période d’essai)',
-        'cdi_trial' => 'CDI (en période d’essai)',
-        'cdd' => 'CDD',
-        'temporary' => 'Intérimaire',
-        'freelance' => 'Indépendant / Freelance',
-        'civil_servant' => 'Fonctionnaire',
-        'unemployed' => 'Sans emploi',
-        'job_seeker' => 'Chômeur·se',
-        'retired' => 'Retraité·e',
-        'student' => 'Étudiant·e',
-        'apprentice' => 'Alternant·e',
-        'intern' => 'Stagiaire',
-    ];
+    // Function qui permet de transformer cdi_outside_trial en CDI (hors période d’essai) pour la rendue Twig de profile/index.html.twig
+    // Car sinon c'est cdi_outside_trial qui est afficher 
+    // Pour afficher sur twig {{ user.readableEmploymentStatus }}
+    public function getReadableEmploymentStatus(): string
+    {
+        $statusMappings = [
+            'cdi_outside_trial' => 'CDI (hors période d’essai)',
+            'cdi_trial' => 'CDI (en période d’essai)',
+            'cdd' => 'CDD',
+            'temporary' => 'Intérimaire',
+            'freelance' => 'Indépendant / Freelance',
+            'civil_servant' => 'Fonctionnaire',
+            'unemployed' => 'Sans emploi',
+            'job_seeker' => 'Chômeur·se',
+            'retired' => 'Retraité·e',
+            'student' => 'Étudiant·e',
+            'apprentice' => 'Alternant·e',
+            'intern' => 'Stagiaire',
+        ];
 
-    return $statusMappings[$this->employement_status] ?? 'Statut Inconnu';
-}
+        return $statusMappings[$this->employement_status] ?? 'Statut Inconnu';
+    }
 
-public function getReadableGuarante(): string {
-    $statusMappingsGuarantee = [
-        'no_guarantor' => 'Aucun garant',
-        'relative_guarantor' => 'Proche(s) se portant garant',
-        'insurance_bank' => 'Assurance/Banque',
-        'guarantee_visale' => 'Garantie visale',
-        
-    ];
+    public function getReadableGuarante(): string
+    {
+        $statusMappingsGuarantee = [
+            'no_guarantor' => 'Aucun garant',
+            'relative_guarantor' => 'Proche(s) se portant garant',
+            'insurance_bank' => 'Assurance/Banque',
+            'guarantee_visale' => 'Garantie visale',
 
-    return $statusMappingsGuarantee[$this->guarantee] ?? 'Statut Inconnu';
-}
+        ];
 
-
-
-
+        return $statusMappingsGuarantee[$this->guarantee] ?? 'Statut Inconnu';
+    }
 }

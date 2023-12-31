@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -51,7 +52,14 @@ class RegistrationFormType extends AbstractType
             ])
             
 
-            ->add('presentation')
+            ->add('presentation', TextareaType::class, [
+                'attr' => [
+                    'rows' => 10, // Nombre de lignes dans le textarea
+                    'cols' => 50  // Largeur du textarea
+                ],
+                // Les autres options comme 'required' peuvent être ajoutées ici
+            ])
+            
             ->add('first_name')
             ->add('last_name')
             ->add('telephone')
