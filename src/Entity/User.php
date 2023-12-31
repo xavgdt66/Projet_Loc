@@ -519,6 +519,7 @@ public function getUpdatedAt(): ?\DateTimeImmutable
 
 // Function qui permet de transformer cdi_outside_trial en CDI (hors période d’essai) pour la rendue Twig de profile/index.html.twig
 // Car sinon c'est cdi_outside_trial qui est afficher 
+// Pour afficher sur twig {{ user.readableEmploymentStatus }}
 public function getReadableEmploymentStatus(): string {
     $statusMappings = [
         'cdi_outside_trial' => 'CDI (hors période d’essai)',
@@ -536,6 +537,18 @@ public function getReadableEmploymentStatus(): string {
     ];
 
     return $statusMappings[$this->employement_status] ?? 'Statut Inconnu';
+}
+
+public function getReadableGuarante(): string {
+    $statusMappingsGuarantee = [
+        'no_guarantor' => 'Aucun garant',
+        'relative_guarantor' => 'Proche(s) se portant garant',
+        'insurance_bank' => 'Assurance/Banque',
+        'guarantee_visale' => 'Garantie visale',
+        
+    ];
+
+    return $statusMappingsGuarantee[$this->guarantee] ?? 'Statut Inconnu';
 }
 
 
