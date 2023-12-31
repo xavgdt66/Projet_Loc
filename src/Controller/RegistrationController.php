@@ -63,7 +63,7 @@ class RegistrationController extends AbstractController
     }*/
 
 
-    #[Route('/register', name: 'app_register')]
+    /*#[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -109,11 +109,67 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }*/
+
+
+
+    #[Route('/register', name: 'app_register')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+    
+            // Gestion du téléchargement du fichier PNG
+            $brochureFile = $form->get('brochure')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+    
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('kernel.project_dir').'/public/images/products',
+                        $newFilename
+                    );
+                    // Mettre à jour l'entité avec le nouveau nom de fichier
+                    $user->setBrochureFilename($newFilename);
+                } catch (FileException $e) {
+                    // Gérer l'exception si quelque chose se passe pendant le téléchargement
+                    // Par exemple, ajouter un message flash pour informer l'utilisateur
+                    $this->addFlash('danger', 'Une erreur s’est produite lors du téléchargement du fichier.');
+                }
+            }
+    
+            // Vérification de la valeur de employement_status
+            if (null === $user->getEmployementStatus()) {
+                // Si aucune valeur n'est sélectionnée, définir une valeur par défaut ou gérer l'erreur
+                // Exemple : $user->setEmployementStatus('valeur_par_defaut');
+            }
+    
+            $entityManager->persist($user);
+            $entityManager->flush();
+    
+            // ... code pour envoyer l'email de vérification ...
+    
+            // Redirection vers la page d'accueil avec un message de succès
+            $this->addFlash('success', 'Votre inscription a été effectuée avec succès.');
+            return $this->redirectToRoute('app_home');
+        }
+    
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
-
-
-
-
+    
 
 
 

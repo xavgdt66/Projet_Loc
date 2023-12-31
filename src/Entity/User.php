@@ -113,17 +113,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
 
-    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "imageProfile", size: "imageSize")]
+    /*#[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "imageProfile", size: "imageSize")]
     private ?File $fichierImage;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private $profile_picture; 
+    private $profile_picture; */
+
+    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
+    private ?File $fichierImage;
+    
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
+    private ?string $profile_picture = null;
+    
+
+
+
+
+
+
 
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+
+
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $brochureFilename = null;
+
+    public function setBrochureFilename(?string $brochureFilename): self
+    {
+        $this->brochureFilename = $brochureFilename;
+        return $this;
+    }
+
+    public function getBrochureFilename(): ?string
+    {
+        return $this->brochureFilename;
+    }
 
 
     /**
@@ -484,4 +515,30 @@ public function getUpdatedAt(): ?\DateTimeImmutable
 {
     return $this->updatedAt;
 }
+
+
+// Function qui permet de transformer cdi_outside_trial en CDI (hors période d’essai) pour la rendue Twig de profile/index.html.twig
+// Car sinon c'est cdi_outside_trial qui est afficher 
+public function getReadableEmploymentStatus(): string {
+    $statusMappings = [
+        'cdi_outside_trial' => 'CDI (hors période d’essai)',
+        'cdi_trial' => 'CDI (en période d’essai)',
+        'cdd' => 'CDD',
+        'temporary' => 'Intérimaire',
+        'freelance' => 'Indépendant / Freelance',
+        'civil_servant' => 'Fonctionnaire',
+        'unemployed' => 'Sans emploi',
+        'job_seeker' => 'Chômeur·se',
+        'retired' => 'Retraité·e',
+        'student' => 'Étudiant·e',
+        'apprentice' => 'Alternant·e',
+        'intern' => 'Stagiaire',
+    ];
+
+    return $statusMappings[$this->employement_status] ?? 'Statut Inconnu';
+}
+
+
+
+
 }

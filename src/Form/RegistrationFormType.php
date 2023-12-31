@@ -58,22 +58,34 @@ class RegistrationFormType extends AbstractType
             ->add('address')
             ->add('employement_status', ChoiceType::class, [
                 'choices'  => [
-                    "CDI (hors période d'essai)" => null,
-                    "CDI (en période d'essai)" => true,
-                    'CDD' => false,
-                    "Intérimaire" => null,
-                    "Indépendant / Freelance" => true,
-                    'Fonctionnaire' => false,
-                    "Sans emploi" => null,
-                    "Chômeur·se" => true,
-                    'Retraité·e' => false,
-                    "Étudiant·e" => null,
-                    "Alternant·e" => true,
-                    'Stagiaire' => false,
+                    "CDI (hors période d'essai)" => 'cdi_outsidfse_trial',
+                    "CDI (en période d'essai)" => 'cdi_trial',
+                    'CDD' => 'cdd',
+                    "Intérimaire" => 'temporary',
+                    "Indépendant / Freelance" => 'freelance',
+                    'Fonctionnaire' => 'civil_servant',
+                    "Sans emploi" => 'unemployed',
+                    "Chômeur·se" => 'job_seeker',
+                    'Retraité·e' => 'retired',
+                    "Étudiant·e" => 'student',
+                    "Alternant·e" => 'apprentice',
+                    'Stagiaire' => 'intern',
                 ],
             ])
+            
             ->add('net_income')
-            ->add('guarantee')
+            ->add('guarantee', ChoiceType::class, [
+                'choices'  => [
+                    "Aucun garant" => 'no_guarantor',
+                    "Proche(s) se portant garant" => 'relative_guarantor',
+                    'Assurance/Banque' => 'insurance_bank',
+                    'Garantie visale' => 'guarantee_visale',
+                ],
+            ])
+            
+
+
+
 
             ->add('agreeTerms', CheckboxType::class, [
                                 'mapped' => false,
