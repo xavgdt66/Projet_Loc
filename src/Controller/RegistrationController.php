@@ -1,4 +1,5 @@
 <?php
+// RegistrationController.php pour les locataires
 
 namespace App\Controller;
 
@@ -15,7 +16,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use App\Controller\FileException;
+//use App\Controller\FileException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -25,91 +28,7 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    /*#[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('noreply@gmail.com', 'Xavier'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_home');
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
-    }*/
-
-
-    /*#[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            // Gestion du téléchargement du fichier PNG
-            $brochureFile = $form->get('brochure')->getData();
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-
-                try {
-                    $brochureFile->move(
-                        $this->getParameter('kernel.project_dir').'/public/images/products',
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // Gérer l'exception si quelque chose se passe pendant le téléchargement
-                }
-
-                // Mettre à jour l'entité avec le nouveau nom de fichier, si nécessaire
-                // $user->setBrochureFilename($newFilename);
-            }
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // ... code pour envoyer l'email de vérification ...
-
-            return $this->redirectToRoute('app_home');
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
-    }*/
+    
 
 
 
@@ -119,7 +38,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -128,48 +47,50 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-    
+
             // Gestion du téléchargement du fichier PNG
             $brochureFile = $form->get('brochure')->getData();
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-    
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+
                 try {
                     $brochureFile->move(
-                        $this->getParameter('kernel.project_dir').'/public/images/products',
+                        $this->getParameter('kernel.project_dir') . '/public/images/products',
                         $newFilename
                     );
                     // Mettre à jour l'entité avec le nouveau nom de fichier
                     $user->setBrochureFilename($newFilename);
-                } catch (FileException $e) {
+                } catch (FileException $e) { 
                     // Gérer l'exception si quelque chose se passe pendant le téléchargement
                     // Par exemple, ajouter un message flash pour informer l'utilisateur
                     $this->addFlash('danger', 'Une erreur s’est produite lors du téléchargement du fichier.');
                 }
             }
-    
+
             // Vérification de la valeur de employement_status
             if (null === $user->getEmployementStatus()) {
                 // Si aucune valeur n'est sélectionnée, définir une valeur par défaut ou gérer l'erreur
                 // Exemple : $user->setEmployementStatus('valeur_par_defaut');
             }
-    
+            // Définir le rôle à 'ROLE_LOCATAIRE'
+            $user->setRoles(['ROLE_LOCATAIRE']);
+
             $entityManager->persist($user);
             $entityManager->flush();
-    
+
             // ... code pour envoyer l'email de vérification ...
-    
+
             // Redirection vers la page d'accueil avec un message de succès
             $this->addFlash('success', 'Votre inscription a été effectuée avec succès.');
             return $this->redirectToRoute('app_home');
         }
-    
+
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
-    
+
 
 
 

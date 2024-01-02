@@ -6,12 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
-
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -36,20 +32,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    /* #[Assert\Type('string')]
+    #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 50)]
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
-    private ?string $first_name = null;*/
-
     #[ORM\Column(type: "string", length: 50, nullable: true)]
     private ?string $first_name = null;
 
 
-
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 2, max: 50)]
-    #[ORM\Column(type: "string", length: 50)]
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
     private ?string $last_name = null;
+
+
+
+
+
 
     #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{1,10}$/')]
@@ -60,30 +55,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 2, max: 1000)]
     #[ORM\Column(type: "string", length: 1000)]
     private ?string $address = null;
+    /////////////////////////////////////////////////
+    #[ORM\Column(type: "string", length: 1000, nullable: true)]
 
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 100, max: 10000)]
-    #[ORM\Column(type: "string", length: 1000)]
     private ?string $presentation = null;
-
+    ///////////////////////////////////////////////////
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $employement_status = null;
 
-    #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{1,10}$/')]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: "integer", nullable: true)]
     private ?int $net_income = null;
 
-    #[ORM\Column(type: "string", length: 555, nullable: true)]
+    #[ORM\Column(type: "string", nullable: true)]
     private ?string $guarantee = null;
+
 
     #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 100)]
     #[ORM\Column(type: "string", length: 100, nullable: true)]
     private ?string $nom_agence = null;
 
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{4}$/')]
+
     #[ORM\Column(type: "integer", nullable: true)]
     private ?int $numero_rue = null;
 
@@ -100,20 +93,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", length: 60, nullable: true)]
     private ?string $ville = null;
 
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{17}$/')]
-    #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $carte_professionnelle = null;
+    #[ORM\Column(type: "string", length: 17, nullable: true)]
+    private ?string $carte_professionnelle = null;
+
 
     #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{9}$/')]
     #[ORM\Column(type: "integer", nullable: true)]
     private ?int $siren = null;
 
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{14}$/')]
-    #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $siret = null;
+    #[ORM\Column(type: "string", length: 14, nullable: true)]
+    private ?string $siret = null;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
@@ -312,10 +302,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->last_name;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(?string $last_name): self
     {
         $this->last_name = $last_name;
-
         return $this;
     }
 
@@ -324,7 +313,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->telephone;
     }
 
-    public function setTelephone(string $telephone): static
+    public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
 
@@ -348,7 +337,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->presentation;
     }
 
-    public function setPresentation(string $presentation): static
+    public function setPresentation(?string $presentation): self
     {
         $this->presentation = $presentation;
 
@@ -372,7 +361,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->net_income;
     }
 
-    public function setNetIncome(string $net_income): static
+    public function setNetIncome(?string $net_income): self
     {
         $this->net_income = $net_income;
 
@@ -408,7 +397,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->numero_rue;
     }
 
-    public function setNumeroRue(string $numero_rue): static
+    public function setNumeroRue(?string $numero_rue): self
     {
         $this->numero_rue = $numero_rue;
 
@@ -432,7 +421,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->code_postal;
     }
 
-    public function setCodePostal(string $code_postal): static
+    public function setCodePostal(?string $code_postal): self
     {
         $this->code_postal = $code_postal;
 
@@ -456,7 +445,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->carte_professionnelle;
     }
 
-    public function setCarteProfessionnelle(string $carte_professionnelle): static
+    public function setCarteProfessionnelle(?string $carte_professionnelle): self
     {
         $this->carte_professionnelle = $carte_professionnelle;
 
@@ -468,7 +457,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->siren;
     }
 
-    public function setSiren(string $siren): static
+    public function setSiren(?string $siren): self
     {
         $this->siren = $siren;
 
@@ -480,7 +469,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->siret;
     }
 
-    public function setSiret(string $siret): static
+    public function setSiret(?string $siret): self
     {
         $this->siret = $siret;
 

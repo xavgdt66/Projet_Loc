@@ -76,7 +76,7 @@ class UserCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             EmailField::new('email'),
             TextField::new('password')->hideOnIndex(),
-            BooleanField::new('is_verified', 'Is Verified'),
+            BooleanField::new('is_verified', 'Utilisateur verifier'),
 
             ChoiceField::new('employement_status', 'Employment Status')
                 ->setChoices([
@@ -114,10 +114,10 @@ class UserCrudController extends AbstractCrudController
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 ->setRequired(false),
             TextField::new('first_name', 'First Name'),
-            TextField::new('last_name', 'Last Name'),
+            TextField::new('last_name', 'Last Name')->setRequired(false), // peut etre vide via setRequired(false)
             IntegerField::new('telephone'),
             TextareaField::new('address'),
-            TextareaField::new('presentation'),
+            TextareaField::new('presentation')->setRequired(false), // peut etre vide via setRequired(false)
             IntegerField::new('net_income', 'Net Income'),
             TextField::new('nom_agence', 'Agency Name'),
             IntegerField::new('numero_rue', 'Street Number'),

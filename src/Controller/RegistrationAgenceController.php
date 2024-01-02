@@ -1,5 +1,5 @@
 <?php
-
+// RegistrationAgenceController.php 
 namespace App\Controller;
 
 use App\Entity\User;
@@ -40,6 +40,9 @@ class RegistrationAgenceController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            $user->setRoles(['ROLE_AGENCY']);
+
 
             $entityManager->persist($user);
             $entityManager->flush();

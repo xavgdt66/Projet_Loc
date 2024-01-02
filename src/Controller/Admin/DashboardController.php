@@ -43,7 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Aller sur le site', 'fas fa-undo', 'app_home');
 
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToRoute('Tableau de Bord Personnalisé', 'fa fa-dashboard', 'admin_custom_dashboard');
+        yield MenuItem::linkToRoute('Statistique', 'fa fa-dashboard', 'admin_custom_dashboard');
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
 
          yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
