@@ -52,5 +52,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+/// funciton search role locataire for agency 
+
+
+
+    public function findByEmailAndRole(?string $email, string $role): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email LIKE :email')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('email', '%' . $email . '%')
+            ->setParameter('role', '%"'.$role.'"%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    
 }

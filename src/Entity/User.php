@@ -546,4 +546,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $statusMappingsGuarantee[$this->guarantee] ?? 'Statut Inconnu';
     }
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
 }
