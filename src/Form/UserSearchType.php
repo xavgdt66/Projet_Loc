@@ -14,7 +14,7 @@ class UserSearchType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'required' => false,
-                'label' => 'Email de l\'utilisateur'
+                'label' => 'Email du locataire'
             ])
             ->add('search', SubmitType::class, ['label' => 'Rechercher']);
     }
