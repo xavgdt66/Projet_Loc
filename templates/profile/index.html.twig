@@ -3,6 +3,84 @@
 {% block title %}Hello ProfileController!{% endblock %}
 
 {% block body %}
+<div class="container mt-4">
+    <h1 class="text-center">Profil de {{ user.email }}</h1>
+
+    <!-- Afficher le nombre total de mois de loyers payés -->
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-8 text-center">
+            <h3 style="color: green;">Nombre total de mois de loyers payés : {{ totalMonthsPaid }}</h3>
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_AGENCY')  %}
+        <button id="toggleFormButton">Noter les loyers du locataire</button>
+
+        <div class="row justify-content-center" style="display:none;" id="myForm">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Envoyer un avis</strong>
+                    </div>
+
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                            {{ form_widget(form) }}
+                            <button type="submit" class="btn btn-primary">Envoyer l'avis</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('toggleFormButton').addEventListener('click', function() {
+                var form = document.getElementById('myForm');
+                if (form.style.display === 'none' || form.style.display === '') {
+                    form.style.display = 'block';
+                } else {
+                    form.style.display = 'none';
+                }
+            });
+        </script>
+    {% endif %}
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="text-center">Avis</h2>
+            <div class="reviews">
+                {% for review in reviews %}
+                    <div class="review card mb-3">
+                        <div class="card-body">
+                            <p><strong>Date d'entrée du locataire (date indiquée sur le bail):</strong> {{ review.startDate|date('d/m/Y') }}</p>
+                            <p><strong>Date de fin du bail:</strong> {{ review.endDate|date('d/m/Y') }}</p>
+                            <p><strong>Commentaire:</strong> {{ review.comment }}</p>
+                            <!-- Afficher d'autres informations comme la note moyenne, etc. -->
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center">Aucun avis disponible pour cet utilisateur.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <section style="background-color: #eee;">
