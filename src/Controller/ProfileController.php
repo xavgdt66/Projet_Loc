@@ -1,33 +1,10 @@
 <?php
-/*
-namespace App\Controller;
-
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
-class ProfileController extends AbstractController
-{
-    #[Route('/profile/{id}', name: 'app_profile')]
-    public function index(User $user): Response
-    {
-        return $this->render('profile/index.html.twig', [
-            'user' => $user, 
-        ]);
-    }
-}
-
-*/
-
-
 // src/Controller/ProfileController.php
 namespace App\Controller;
 
 use App\Entity\Review;
 use App\Entity\User;
+use App\Form\UserType;
 use App\Form\ReviewType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -93,6 +70,56 @@ class ProfileController extends AbstractController
             'totalMonthsPaid' => $totalMonthsPaid // Passer cette variable à la vue
         ]);
     }
+
+
+
+    #[Route('/profile/edit/{id}', name: 'app_profile_edit')]
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        // Assurez-vous que l'utilisateur connecté est le même que celui du profil ou qu'il a un rôle spécial (comme admin)
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        if ($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+    
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrer les modifications
+            $entityManager->persist($user);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Profil mis à jour avec succès.');
+    
+            return $this->redirectToRoute('app_profile', ['id' => $user->getId()]);
+        }
+    
+        return $this->render('profile/edit.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
  

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% if app.user == user %}
+    <a href="{{ path('app_profile_edit', {'id': user.id}) }}">Modifier mon profil</a>
+{% endif %}
+    <h1>Modifier le Profil</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Mettre à jour</button>
+    {{ form_end(form) }}
+{% endblock %}
