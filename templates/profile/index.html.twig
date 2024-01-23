@@ -14,11 +14,14 @@
     <h1 class="text-center">Profil de {{ user.email }}</h1>
 
     <!-- Afficher le nombre total de mois de loyers payés -->
+    {% if 'ROLE_AGENCY' not in app.user.roles %}
     <div class="row justify-content-center mb-3">
         <div class="col-md-8 text-center">
             <h3 style="color: green;">Nombre total de mois de loyers payés : {{ totalMonthsPaid }}</h3>
         </div>
     </div>
+{% endif %}
+
 
 
 
@@ -81,7 +84,6 @@
 {% endif %}
 
     
-
 
 
 

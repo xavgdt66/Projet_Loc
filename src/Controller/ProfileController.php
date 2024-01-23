@@ -104,6 +104,39 @@ class ProfileController extends AbstractController
 
 
 
+    #[Route('/myprofile', name: 'app_my_profile')]
+    public function myProfile(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+
+        // Récupération des avis liés à l'utilisateur
+        $reviews = $entityManager->getRepository(Review::class)->findBy(['user' => $user]);
+
+        // Calculer le nombre total de mois de loyers payés
+        $totalMonthsPaid = 0;
+        foreach ($reviews as $review) {
+            $start = $review->getStartDate();
+            $end = $review->getEndDate();
+
+            // Calculer le nombre de mois couverts par cet avis
+            $interval = $start->diff($end);
+            $months = $interval->y * 12 + $interval->m;
+            if ($interval->d > 0) {
+                $months++; // Considérer les jours partiels comme un mois entier
+            }
+            $totalMonthsPaid += $months;
+        }
+
+        return $this->render('profile/index.html.twig', [
+            'user' => $user,
+            'reviews' => $reviews,
+            'totalMonthsPaid' => $totalMonthsPaid
+        ]);
+    }
 
 
 
@@ -113,7 +146,36 @@ class ProfileController extends AbstractController
 
 
 
-
+    #[Route('/edit-my-profile', name: 'app_edit_my_profile')]
+    public function editMyProfile(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+    
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+    
+        $form = $this->createForm(UserType::class, $user, [
+            'user_roles' => $user->getRoles(), // Ajoutez les rôles de l'utilisateur ici
+        ]);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrer les modifications de l'utilisateur
+            $entityManager->persist($user);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Profil mis à jour avec succès.');
+    
+            return $this->redirectToRoute('app_my_profile'); // Redirection vers la page du profil
+        }
+    
+        return $this->render('profile/edit.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user // Assurez-vous de passer l'objet User à la vue
+        ]);
+    }
+    
 
 
 
