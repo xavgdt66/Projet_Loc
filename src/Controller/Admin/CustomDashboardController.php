@@ -9,6 +9,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 class CustomDashboardController extends AbstractDashboardController
 {
 
@@ -19,6 +22,8 @@ class CustomDashboardController extends AbstractDashboardController
         $this->userRepository = $userRepository;
     }
     #[Route('/admin/custom-dashboard', name: 'admin_custom_dashboard')]
+    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+
     public function index(): Response
     {
         // Logique pour récupérer les données, par exemple, le nombre d'utilisateurs

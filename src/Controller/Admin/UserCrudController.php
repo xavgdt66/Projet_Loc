@@ -22,8 +22,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class UserCrudController extends AbstractCrudController
 {
     private EntityManagerInterface $entityManager;

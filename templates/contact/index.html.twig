@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contactez nous{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Style général du formulaire */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Style pour chaque champ du formulaire */
+        form input,
+        form textarea {
+            border: 2px solid #000;   /* Bordure noire autour de chaque champ */
+            padding: 10px;           /* Espacement interne de chaque champ */
+            background-color: #fff382; /* Couleur de fond à l'intérieur de chaque champ */
+        }
+
+        /* Style pour le bouton */
+        .btn {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">{{ button_label|default('Envoyer') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

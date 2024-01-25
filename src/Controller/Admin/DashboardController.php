@@ -14,7 +14,10 @@ use App\Entity\User;
 // Ajoutez les use nécessaires pour le UserRepository ou l'EntityManager
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class DashboardController extends AbstractDashboardController
 {
     private $userRepository;
@@ -26,6 +29,8 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin', name: 'admin')]
+    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig');

@@ -11,6 +11,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+//use Doctrine\Common\Collections\Collection;
+use App\Entity\Review;
+
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[Vich\Uploadable]
@@ -135,6 +139,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Review::class)]
     private Collection $reviews;
+
+
+///////////////////////
+
+
+
+
+/////////////////////////////
+
+
+
+
+
 
     public function __construct()
     {
@@ -565,7 +582,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reviews;
     }
 
-    public function addReview(Review $review): self
+    /*public function addReview(Review $review): self
     {
         if (!$this->reviews->contains($review)) {
             $this->reviews->add($review);
@@ -573,7 +590,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }*/
+
+      /**
+     * Check if the user has a specific role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
     }
+
+     /**
+     * Add a review to the user (only if the user has the "ROLE_LOCATAIRE").
+     *
+     * @param Review $review
+     * @return $this
+     */
+    public function addReview(Review $review): self
+    {
+        // Add the condition to associate reviews only with users having the "ROLE_LOCATAIRE"
+        if ($this->hasRole('ROLE_LOCATAIRE')) {
+            if (!$this->reviews->contains($review)) {
+                $this->reviews->add($review);
+                $review->setUser($this);
+            }
+        }
+
+        return $this;
+    }
+
+
+
 
     public function removeReview(Review $review): self
     {

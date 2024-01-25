@@ -22,9 +22,9 @@ class SecurityController extends AbstractController implements AuthenticationSuc
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -35,8 +35,14 @@ class SecurityController extends AbstractController implements AuthenticationSuc
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout()
     {
+        // Vérifier si l'utilisateur est connecté
+        if (!$this->getUser()) {
+            // Rediriger l'utilisateur vers une autre page, par exemple la page d'accueil
+            return $this->redirectToRoute('app_home'); 
+        }
+
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
