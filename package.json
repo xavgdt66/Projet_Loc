@@ -3,5 +3,9 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.2",
     "jquery": "^3.7.1"
+  },
+  "dependencies": {
+    "glob": "^5.0.14",
+    "minimatch": "^3.0.2"
   }
 }
