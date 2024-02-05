@@ -1,5 +1,26 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+  resource:
+    path: '../src/Controller/'
+    namespace: 'App\Controller'
+  type: attribute
+
+page_non_verifiee:
+  path: 'page_non_verifiee'
+  controller: 'App\Controller\VerificationStatusController::index'
+
+admin_dashboard:
+  path: '/admin'
+  controller: 'App\Controller\Admin\DashboardController::index'
+  methods: GET
+  options:
+    guard:
+      authenticators:
+        - app.security.login_form_authenticator
+    provider: app_user_provider
+
+app_home:
+  path: '/'
+  controller: 'App\Controller\HomeController::index'
+  methods: GET
+
+# Vos autres routes ici...

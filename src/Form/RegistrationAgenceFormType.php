@@ -20,7 +20,7 @@ class RegistrationAgenceFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
+        $builder 
             ->add('email')
             ->add('brochure', FileType::class, [
                 'label' => 'Brochure (PNG file)',
@@ -43,6 +43,7 @@ class RegistrationAgenceFormType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid PNG image',
                     ])
                 ],
+                
             ])
             ->add('telephone', TextType::class, [
                 'attr' => ['class' => 'tinymce'],

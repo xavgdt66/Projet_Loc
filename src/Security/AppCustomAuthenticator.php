@@ -49,13 +49,13 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         // Vérifiez si l'utilisateur est validé
         if ($user instanceof \App\Entity\User && !$user->isVerified()) {
             // Rediriger vers la page de vérification du compte
-            return new RedirectResponse($this->urlGenerator->generate('compte_verification'));
+            return new RedirectResponse($this->urlGenerator->generate('page_non_verifiee'));
         }
     
         // Redirection par défaut après une connexion réussie
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
-
+ 
 
     protected function getLoginUrl(Request $request): string
     {

@@ -32,9 +32,7 @@
 
 {% block body %}
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_widget(form) | raw }}
         <button class="btn">{{ button_label|default('Envoyer') }}</button>
     {{ form_end(form) }}
 {% endblock %}
-
-

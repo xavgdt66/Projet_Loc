@@ -15,6 +15,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class RegistrationAgenceController extends AbstractController
 {
@@ -26,8 +27,14 @@ class RegistrationAgenceController extends AbstractController
     }
 
     #[Route('/registeragence', name: 'app_registeragence')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,Security $security): Response
     {
+
+         // Vérifiez si un utilisateur est connecté
+         if ($security->getUser()) {
+            // L'utilisateur est connecté, redirige vers une autre page ou renvoie une réponse personnalisée
+            return $this->redirectToRoute('app_home'); // Ou renvoyez une réponse personnalisée indiquant la restriction d'accès
+        }
         $user = new User();
         $form = $this->createForm(RegistrationAgenceFormType::class, $user);
         $form->handleRequest($request);

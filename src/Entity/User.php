@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 //use Doctrine\Common\Collections\Collection;
+
 use App\Entity\Review;
 
 
@@ -113,12 +114,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
-
-    /*#[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "imageProfile", size: "imageSize")]
-    private ?File $fichierImage;
-
-    #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private $profile_picture; */
 
     #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
     private ?File $fichierImage;
@@ -307,6 +302,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 
     public function getFirstName(): ?string
     {

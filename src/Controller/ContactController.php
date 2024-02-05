@@ -13,11 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
 {
-    /**
-     * @Route("/contact", name="contact")
-     */
+    
     #[Route('/contact', name: 'app_contact')]
-
     public function index(Request $request, MailerService $mailer)
     {
         $form = $this->createForm(ContactType::class);

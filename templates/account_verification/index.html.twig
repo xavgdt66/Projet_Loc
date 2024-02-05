@@ -7,4 +7,6 @@
 {% block body %}
     <h1>Vérification du Compte</h1>
     <p>Votre compte est en cours de vérification. Veuillez revenir plus tard.</p>
+    {# Utilisez le bon nom de route ici #}
+    <a href="{{ path('page_non_verifiee') }}">Retour à la page de vérification</a>
 {% endblock %}

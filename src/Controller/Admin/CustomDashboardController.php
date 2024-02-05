@@ -23,7 +23,6 @@ class CustomDashboardController extends AbstractDashboardController
     }
     #[Route('/admin/custom-dashboard', name: 'admin_custom_dashboard')]
     #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
-
     public function index(): Response
     {
         // Logique pour récupérer les données, par exemple, le nombre d'utilisateurs

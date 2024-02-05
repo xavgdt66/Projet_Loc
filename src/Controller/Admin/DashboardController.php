@@ -11,13 +11,22 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\Politiquedeconfidentilaite;
 use App\Entity\User;
 
-// Ajoutez les use nécessaires pour le UserRepository ou l'EntityManager
-use Doctrine\ORM\EntityManagerInterface;
+
+
+
+
+
+
+
+
+
+
+
 use App\Repository\UserRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+//#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class DashboardController extends AbstractDashboardController
 {
     private $userRepository;
@@ -29,12 +38,40 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin', name: 'admin')]
-    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
-
     public function index(): Response
     {
+        // Vérifiez si l'utilisateur a le rôle ADMIN
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            // Redirigez l'utilisateur vers la route app_home s'il n'est pas administrateur
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('admin/dashboard.html.twig');
     }
+
+ 
+
+    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+    #[Route('/admin/liste-users', name: 'liste_users')]
+    public function listeUsers(UserRepository $userRepository): Response
+    {
+        $users = $userRepository->findBy(['isVerified' => false]);
+
+        return $this->render('admin/listeUser.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public function configureDashboard(): Dashboard
     {
@@ -50,8 +87,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToRoute('Statistique', 'fa fa-dashboard', 'admin_custom_dashboard');
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
+        yield MenuItem::linkToRoute('ValidateUsers', 'fa fa-users','admin_liste_users');
 
-         yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
+        yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
     }
 
     private function countUsers()

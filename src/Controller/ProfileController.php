@@ -12,64 +12,99 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+
 class ProfileController extends AbstractController
 {
+
     #[Route('/profile/{id}', name: 'app_profile')]
-    public function index(Request $request, User $user, EntityManagerInterface $entityManager): Response 
+    public function index(UserInterface $currentUser, User $profileUser,Request $request,AuthorizationCheckerInterface $authorizationChecker): Response 
     {
-        $review = new Review();
-        $form = $this->createForm(ReviewType::class, $review);
+        // Check if the current user is not verified
+        if ($currentUser instanceof User && !$currentUser->isVerified()) {
+            return $this->redirectToRoute('page_non_verifiee');
+        }
 
-        $form->handleRequest($request);
+        // Check if the profile user is not verified
+        if (!$profileUser->isVerified()) {
+            return $this->redirectToRoute('page_non_verifiee');
+        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Vérifier si une note existe déjà pour la période donnée
-            $existingReview = $entityManager->getRepository(Review::class)->findOneBy([
-                'user' => $user,
-                'startDate' => $review->getStartDate(),
-                'endDate' => $review->getEndDate()
+        // Vérifiez si l'utilisateur a le rôle "Admin" ou "Agency"
+        if ($authorizationChecker->isGranted('ROLE_ADMIN') || $authorizationChecker->isGranted('ROLE_AGENCY')) {
+            // Continuez avec le code existant si l'utilisateur a le bon rôle
+            $reviews = $profileUser->getReviews();
+            $totalMonthsPaid = 0;
+
+            foreach ($reviews as $review) {
+                $start = $review->getStartDate();
+                $end = $review->getEndDate();
+    
+                $interval = $start->diff($end);
+                $months = $interval->y * 12 + $interval->m;
+    
+                if ($interval->d > 0) {
+                    $months++;
+                }
+    
+                $totalMonthsPaid += $months;
+            }
+
+            $form = $this->createForm(ReviewType::class);
+            $form->handleRequest($request);
+
+            // Votre code pour la soumission du formulaire et le rendu de la page
+            return $this->render('profile/index.html.twig', [
+                'user' => $profileUser,
+                'reviews' => $reviews,
+                'totalMonthsPaid' => $totalMonthsPaid,
+                'form' => $form->createView(),
             ]);
-         
-            if ($existingReview) {
-                $this->addFlash('error', 'Une note existe déjà pour cette période.');
-            } else {
-                // Associer l'utilisateur à l'objet Review
-                $review->setUser($user);
-        
-                // Enregistrer la nouvelle note
-                $entityManager->persist($review);
-                $entityManager->flush();
-        
-                $this->addFlash('success', 'Votre avis a été enregistré avec succès.');
-            }
-        
-            return $this->redirectToRoute('app_profile', ['id' => $user->getId()]);
         }
 
-        $reviews = $user->getReviews();
-
-        // Calculer le nombre total de mois de loyers payés
-        $totalMonthsPaid = 0;
-        foreach ($reviews as $review) {
-            $start = $review->getStartDate();
-            $end = $review->getEndDate();
-
-            // Calculer le nombre de mois couverts par cet avis
-            $interval = $start->diff($end);
-            $months = $interval->y * 12 + $interval->m;
-            if ($interval->d > 0) {
-                $months++; // Considérer les jours partiels comme un mois entier
-            }
-            $totalMonthsPaid += $months;
-        }
-
-        return $this->render('profile/index.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-            'reviews' => $reviews,
-            'totalMonthsPaid' => $totalMonthsPaid // Passer cette variable à la vue
-        ]);
+        // Redirigez les utilisateurs qui n'ont pas le rôle vers la route "home"
+        return $this->redirectToRoute('app_home');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -81,32 +116,39 @@ class ProfileController extends AbstractController
         if ($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
-    
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Enregistrer les modifications
             $entityManager->persist($user);
             $entityManager->flush();
-    
+
             $this->addFlash('success', 'Profil mis à jour avec succès.');
-    
+
             return $this->redirectToRoute('app_profile', ['id' => $user->getId()]);
         }
-    
+
         return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user
         ]);
     }
-    
 
+
+
+
+
+    // Cette route permet aux users de voir leur profil public meme si il ne sont pas verifier 
 
 
     #[Route('/myprofile', name: 'app_my_profile')]
     public function myProfile(EntityManagerInterface $entityManager): Response
     {
+
+
+
         $user = $this->getUser();
 
         if (!$user) {
@@ -142,7 +184,7 @@ class ProfileController extends AbstractController
 
 
 
-
+    // Cette route permet aux users de modifier leur profil public meme si il ne sont pas verifier 
 
 
 
@@ -150,38 +192,29 @@ class ProfileController extends AbstractController
     public function editMyProfile(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-    
+
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
-    
+
         $form = $this->createForm(UserType::class, $user, [
             'user_roles' => $user->getRoles(), // Ajoutez les rôles de l'utilisateur ici
         ]);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Enregistrer les modifications de l'utilisateur
             $entityManager->persist($user);
             $entityManager->flush();
-    
+
             $this->addFlash('success', 'Profil mis à jour avec succès.');
-    
+
             return $this->redirectToRoute('app_my_profile'); // Redirection vers la page du profil
         }
-    
+
         return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user // Assurez-vous de passer l'objet User à la vue
         ]);
     }
-    
-
-
-
-
-
-
 }
-
- 

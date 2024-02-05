@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 //use App\Controller\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
+use Symfony\Bundle\SecurityBundle\Security;
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -33,8 +33,14 @@ class RegistrationController extends AbstractController
 
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,Security $security): Response
     {
+        // Vérifiez si un utilisateur est connecté
+        if ($security->getUser()) {
+            // L'utilisateur est connecté, redirige vers une autre page ou renvoie une réponse personnalisée
+            return $this->redirectToRoute('app_home'); // Ou renvoyez une réponse personnalisée indiquant la restriction d'accès
+        }
+       
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);

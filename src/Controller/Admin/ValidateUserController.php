@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class ValidateUserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -28,6 +27,10 @@ class ValidateUserController extends AbstractController
     #[Route('/admin/validate-user/{id}', name: 'admin_validate_user')]
     public function validateUser($id): RedirectResponse
 {
+    if (!$this->isGranted('ROLE_ADMIN')) {
+        // Redirigez l'utilisateur vers la route app_home s'il n'est pas administrateur
+        return $this->redirectToRoute('app_home');
+    }
     $user = $this->userRepository->find($id);
     if ($user && !$user->isVerified()) {
         $user->setIsVerified(true);
