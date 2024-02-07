@@ -16,10 +16,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-//use App\Controller\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Bundle\SecurityBundle\Security;
-class RegistrationController extends AbstractController
+ 
+class RegistrationController extends AbstractController 
 {
     private EmailVerifier $emailVerifier;
 
@@ -28,19 +28,19 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    
+
 
 
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,Security $security): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security): Response
     {
         // Vérifiez si un utilisateur est connecté
         if ($security->getUser()) {
             // L'utilisateur est connecté, redirige vers une autre page ou renvoie une réponse personnalisée
             return $this->redirectToRoute('app_home'); // Ou renvoyez une réponse personnalisée indiquant la restriction d'accès
         }
-       
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -54,25 +54,24 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            // Gestion du téléchargement du fichier PNG
-            $brochureFile = $form->get('brochure')->getData();
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+            /////////////////////////////////////////////////Gestion du téléchargement du fichier PNG  ////////////////////////////////////
+
+            $profilePictureFile = $form->get('profilePicture')->getData();
+            if ($profilePictureFile) {
+                $originalFilename = pathinfo($profilePictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $profilePictureFile->guessExtension();
 
                 try {
-                    $brochureFile->move(
+                    $profilePictureFile->move(
                         $this->getParameter('kernel.project_dir') . '/public/images/products',
                         $newFilename
                     );
-                    // Mettre à jour l'entité avec le nouveau nom de fichier
-                    $user->setBrochureFilename($newFilename);
-                } catch (FileException $e) { 
-                    // Gérer l'exception si quelque chose se passe pendant le téléchargement
-                    // Par exemple, ajouter un message flash pour informer l'utilisateur
+                    $user->setProfilePicture($newFilename);
+                } catch (FileException $e) {
                     $this->addFlash('danger', 'Une erreur s’est produite lors du téléchargement du fichier.');
                 }
             }
+            ///////////////////////////////////////////////// fin Gestion du téléchargement du fichier PNG  ////////////////////////////////////
 
             // Vérification de la valeur de employement_status
             if (null === $user->getEmployementStatus()) {

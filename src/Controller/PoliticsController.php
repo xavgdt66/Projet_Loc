@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PoliticsController extends AbstractController
-{
-    private $polRepository;
+{ 
+    private $polRepository; 
 
     public function __construct(PolitiquedeconfidentilaiteRepository $polRepository)
     {

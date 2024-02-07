@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\MentionsLegalesController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -9,19 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\Politiquedeconfidentilaite;
+use App\Entity\Mentionlegale; 
+
 use App\Entity\User;
-
-
-
-
-
-
-
-
-
-
-
-
 use App\Repository\UserRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -90,6 +81,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('ValidateUsers', 'fa fa-users','admin_liste_users');
 
         yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
+
     }
 
     private function countUsers()

@@ -11,10 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Symfony\Bundle\SecurityBundle\Security;
-
+ 
 class MentionsLegalesController extends AbstractController
 {
-    private $MlRepository;
+    private $MlRepository; 
 
     public function __construct(MentionlegaleRepository $MlRepository)
     {
