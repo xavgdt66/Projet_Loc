@@ -13,7 +13,7 @@
 
 				<h1 class="text-center mb-4">Inscription locataire</h1>
 
-				{{ form_errors(registrationForm) }} 
+				{{ form_errors(registrationForm) }}
 
 				{{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
 				{{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
@@ -26,12 +26,12 @@
 				{{ form_row(registrationForm.employement_status, {'label': 'Statut','attr': {'class': 'form-control'}}) }}
 				{{ form_row(registrationForm.net_income, {'label': 'Revenus nets (avant impôts)/Mois','attr': {'class': 'form-control'}}) }}
 				{{ form_row(registrationForm.guarantee, {'label': 'Garantie','attr': {'class': 'form-control'}}) }}
-				{{ form_row(registrationForm.brochure, {'label': 'Photo de profil','attr': {'class': 'form-control'}}) }}
+				{{ form_row(registrationForm.profilePicture, {'label': 'Profile Picture', 'attr': {'class': 'form-control'}}) }}
 				{{ form_row(registrationForm.agreeTerms, {'label': "J'accepte les conditions générales", 'attr': {'class': 'form-check'}}) }}
 
 				<div class="d-grid gap-2">
 					<button type="submit" class="btn btn-primary btn-block">Register</button>
-				</div>
+				</div> 
 				{{ form_end(registrationForm) }}
 			</div>
 		</div>

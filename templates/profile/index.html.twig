@@ -109,9 +109,10 @@
           <div class="card-body text-center">
           
 
-<img src="{{ asset('images/products/' ~ user.getProfilePicture()) }}"
-     alt="avatar"
+<img src="{{ asset('/images/products/' ~ user.getprofilepicture()) }}"
+     alt="avatar" 
      class="profile-picture">
+
 
 
   
@@ -179,16 +180,16 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Phone</p>
+                <p class="mb-0">Status employe</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">(097) 234-5678</p>
+                <p class="text-muted mb-0">{{ user.readableEmploymentStatus }}</p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Mobile</p>
+                <p class="mb-0">Guarante</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">{{ user.getReadableGuarante }}</p>
@@ -279,8 +280,8 @@
 </section>
 <style>
     .profile-picture {
-        width: 150px; /* Définissez la largeur souhaitée */
-        height: 150px; /* Hauteur égale à la largeur pour un carré */
+        width: 350px; /* Définissez la largeur souhaitée */
+        height: 350px; /* Hauteur égale à la largeur pour un carré */
         border-radius: 10%; /* Bords arrondis */
         object-fit: cover; /* Conserve les proportions de l'image */
     }

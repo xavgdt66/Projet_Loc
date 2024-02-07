@@ -20,30 +20,23 @@ class RegistrationAgenceFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder 
+        $builder  
             ->add('email')
-            ->add('brochure', FileType::class, [
-                'label' => 'Brochure (PNG file)',
-            
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-            
-                // make it optional so you don't have to re-upload the file
-                // every time you edit the Product details
-                'required' => false,
-            
-                // unmapped fields can't define their validation using attributes
-                // in the associated entity, so you can use the PHP constraint classes
+            ->add('profilePicture', FileType::class, [
+                'label' => 'Profile Picture',
+                'mapped' => false, // Le champ n'est pas lié à une propriété de l'entité User
+                'required' => false, // Rendre le champ facultatif
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
+                            'image/jpeg', 
                             'image/png',
+                            'image/gif', // Ajoutez les types de fichiers supplémentaires ici
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PNG image',
+                        'mimeTypesMessage' => 'Please upload a valid image file',
                     ])
                 ],
-                
             ])
             ->add('telephone', TextType::class, [
                 'attr' => ['class' => 'tinymce'],

@@ -16,7 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 class ProfileController extends AbstractController
 {
 
@@ -68,12 +69,6 @@ class ProfileController extends AbstractController
         // Redirigez les utilisateurs qui n'ont pas le rôle vers la route "home"
         return $this->redirectToRoute('app_home');
     }
-
-
-
-
-
-
 
 
 

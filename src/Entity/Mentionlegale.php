@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Mentionlegale
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue] 
     #[ORM\Column]
     private ?int $id = null;
 

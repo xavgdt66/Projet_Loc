@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class RegistrationAgenceController extends AbstractController
 {
@@ -46,7 +47,25 @@ class RegistrationAgenceController extends AbstractController
                     $user,
                     $form->get('plainPassword')->getData()
                 )
-            );
+            ); 
+            /////////////////////////////////////////////////Gestion du téléchargement du fichier PNG  ////////////////////////////////////
+
+            $profilePictureFile = $form->get('profilePicture')->getData();
+            if ($profilePictureFile) {
+                $originalFilename = pathinfo($profilePictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $profilePictureFile->guessExtension();
+
+                try {
+                    $profilePictureFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/images/products',
+                        $newFilename
+                    );
+                    $user->setProfilePicture($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur s’est produite lors du téléchargement du fichier.');
+                }
+            }
+            ///////////////////////////////////////////////// fin Gestion du téléchargement du fichier PNG  ////////////////////////////////////
 
             $user->setRoles(['ROLE_AGENCY']);
 
@@ -55,17 +74,21 @@ class RegistrationAgenceController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+           /* $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('noreply@gmail.com', 'Xavier'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+            );*/
             // do anything else you need here, like send an email
 
+            $this->addFlash('success', 'Votre inscription a été effectuée avec succès.');
             return $this->redirectToRoute('app_home');
         }
+
+        var_dump($request->files->get('profilePicture'));
+
 
         return $this->render('registration/registeragence.html.twig', [
             'registrationForm' => $form->createView(),
@@ -75,7 +98,7 @@ class RegistrationAgenceController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); 
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {

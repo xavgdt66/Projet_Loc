@@ -24,6 +24,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 
 #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class UserCrudController extends AbstractCrudController
@@ -49,11 +51,13 @@ class UserCrudController extends AbstractCrudController
             // Autres configurations...
         ;
     }
-
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(BooleanFilter::new('isVerified', 'Utilisateur Validé'));
+            ->add(ChoiceFilter::new('roles', 'Rôle')->setChoices([
+                'Agency' => 'ROLE_AGENCY',
+                'Locataire' => 'ROLE_LOCATAIRE',
+            ]));
     }
 
     /**
@@ -79,35 +83,6 @@ class UserCrudController extends AbstractCrudController
             EmailField::new('email'),
             TextField::new('password')->hideOnIndex(),
             BooleanField::new('is_verified', 'Utilisateur verifier'),
-
-            ChoiceField::new('employement_status', 'Employment Status')
-                ->setChoices([
-                    "CDI (hors période d'essai)" => "CDI (hors période d'essai)",
-                    "CDI (en période d'essai)" => "CDI (en période d'essai)",
-                    'CDD' => 'CDD',
-                    "Intérimaire"  => "Intérimaire",
-                    "Indépendant / Freelance" =>  "Indépendant / Freelance",
-                    'Fonctionnaire' => 'Fonctionnaire',
-                    "Sans emploi"  => "Sans emploi",
-                    "Chômeur·se"  => "Chômeur·se",
-                    'Retraité·e' =>  'Retraité·e',
-                    "Étudiant·e"  => "Étudiant·e",
-                    "Alternant·e"  =>  "Alternant·e",
-                    'Stagiaire'  => 'Stagiaire',
-                    // Ajoutez d'autres statuts si nécessaire
-                ]),
-
-
-
-                ChoiceField::new('guarantee', 'guarantee')
-                ->setChoices([
-                    "Aucun garant" => "Aucun garant",
-                    "Proche(s) se portant garant" => "Proche(s) se portant garant",
-                    'Assurance / Banque' => 'Assurance / Banque',
-                    "Garantie Visale"  => "Garantie Visale",
-
-                ]),
-
             TextField::new('nom_rue', 'Street Name'),
             TextField::new('kbis'),
             ImageField::new('profile_picture')
