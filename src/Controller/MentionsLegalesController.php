@@ -24,11 +24,7 @@ class MentionsLegalesController extends AbstractController
     #[Route('/mentions/legales', name: 'app_mentions_legales')]
     public function index(Security $security): Response
     {
-        // Vérifiez si un utilisateur est connecté
-        if ($security->getUser()) {
-            // L'utilisateur est connecté, redirige vers une autre page ou renvoie une réponse personnalisée
-            return $this->redirectToRoute('app_contact'); // Ou renvoyez une réponse personnalisée indiquant la restriction d'accès
-        }
+        
 
         $Mentionlegale = $this->MlRepository->find(1);
 

@@ -26,6 +26,9 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class UserCrudController extends AbstractCrudController
@@ -76,6 +79,30 @@ class UserCrudController extends AbstractCrudController
         return $this->redirect($request->headers->get('referer'));
     }
 
+
+
+    public function downloadPdf(int $id): Response
+    {
+        $user = $this->userRepository->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+
+        $pdfPath = $this->getParameter('kernel.project_dir') . '/public/images/pdf/' . $user->getKbis();
+
+        if (!file_exists($pdfPath)) {
+            throw $this->createNotFoundException('Fichier PDF non trouvé');
+        }
+
+        // Envoi du fichier PDF en tant que réponse
+        return new BinaryFileResponse($pdfPath);
+    }
+
+
+
+
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -84,7 +111,16 @@ class UserCrudController extends AbstractCrudController
             TextField::new('password')->hideOnIndex(),
             BooleanField::new('is_verified', 'Utilisateur verifier'),
             TextField::new('nom_rue', 'Street Name'),
-            TextField::new('kbis'),
+
+            TextField::new('Kbis', 'PDF') // Champ pour le PDF
+                ->formatValue(function ($value, $entity) {
+                    if ($value) {
+                        return '<a href="' . $this->generateUrl('download_pdf', ['id' => $entity->getId()]) . '">Télécharger le PDF</a>';
+                    } else {
+                        return 'Aucun PDF';
+                    }
+                }),
+
             ImageField::new('profile_picture')
                 ->setBasePath('/images/products')
                 ->setUploadDir('public/images/products')
@@ -103,7 +139,8 @@ class UserCrudController extends AbstractCrudController
             IntegerField::new('carte_professionnelle', 'Professional Card Number'),
             IntegerField::new('siren'),
             IntegerField::new('siret'),
-            DateTimeField::new('updated_at', 'Updated At')->hideOnForm()
+            DateTimeField::new('updated_at', 'Updated At')->hideOnForm(),
+
         ];
     }
 }

@@ -1,0 +1,9 @@
+# config/packages/easy_admin.yaml
+
+easy_admin:
+    entities:
+        VotreEntite:
+            class: App\Entity\User
+            list:
+                fields:
+                    - { property: 'kbis', label: 'Nom du champ' } # Remplacez 'nomDuChampPDF' par le nom du champ dans votre entité

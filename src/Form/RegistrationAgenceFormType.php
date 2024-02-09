@@ -26,7 +26,7 @@ class RegistrationAgenceFormType extends AbstractType
                 'label' => 'Profile Picture',
                 'mapped' => false, // Le champ n'est pas lié à une propriété de l'entité User
                 'required' => false, // Rendre le champ facultatif
-                'constraints' => [
+                'constraints' => [ 
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
@@ -65,10 +65,46 @@ class RegistrationAgenceFormType extends AbstractType
                 'attr' => ['class' => 'tinymce'],
 
             ])
-            ->add('kbis', TextType::class, [
-                'attr' => ['class' => 'tinymce'],
+           /* ->add('kbis', FileType::class, [
+                // Set required to true if necessary
+                'required' => true,
+                // Add validation constraints as needed
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10M', // Adjust max size as needed
+                        'mimeTypes' => ['application/pdf'], // Restrict to PDFs
+                    ]),
+                ],
+                // Customize attributes (optional)
+                'attr' => [
+                    'class' => 'form-control-file',
+                ],
+            ])*/
+            ->add('kbis', FileType::class, [
+                'label' => 'kbis (PDF file)',
 
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using attributes
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    ])
+                ],
             ])
+          
+    
       ////////////////////////////   
 
             ->add('agreeTerms', CheckboxType::class, [

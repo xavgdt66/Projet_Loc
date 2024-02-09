@@ -81,6 +81,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('ValidateUsers', 'fa fa-users','admin_liste_users');
 
         yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
+        yield MenuItem::linkToCrud('Mention legale', 'fa-solid fa-book-open', Mentionlegale::class);
 
     }
 

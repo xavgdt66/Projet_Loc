@@ -7,7 +7,7 @@
     {% if Mentionlegale %}
         <div>
             <!-- Affichez ici les propriétés de l'objet politique -->
-            <p>Contenu: {{ Mentionlegale.mentionlegale | raw}}</p>
+            <p> {{ Mentionlegale.mentionlegale | raw}}</p>
         </div>
     {% else %}
         <p>mentions légales non trouvée.</p>

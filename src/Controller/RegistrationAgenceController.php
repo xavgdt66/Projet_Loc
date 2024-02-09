@@ -60,12 +60,35 @@ class RegistrationAgenceController extends AbstractController
                         $this->getParameter('kernel.project_dir') . '/public/images/products',
                         $newFilename
                     );
-                    $user->setProfilePicture($newFilename);
+                    $user->setProfilePicture($newFilename); 
                 } catch (FileException $e) {
                     $this->addFlash('danger', 'Une erreur s’est produite lors du téléchargement du fichier.');
                 }
             }
             ///////////////////////////////////////////////// fin Gestion du téléchargement du fichier PNG  ////////////////////////////////////
+
+        /////////////////////////// gestion du téléchargement du fichier PDF ////////////////////
+
+        $KbisPictureFile = $form->get('kbis')->getData();
+        if ($KbisPictureFile) {
+            $originalFilenamekbis = pathinfo($KbisPictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilenamekbis = $originalFilenamekbis . '-' . uniqid() . '.' . $KbisPictureFile->guessExtension();
+            try {
+                $KbisPictureFile->move(
+                    $this->getParameter('kernel.project_dir') . '/public/images/pdf',
+                    $newFilenamekbis
+                );
+                $user->setKbis($newFilenamekbis);  
+            } catch (FileException $e) {
+                $this->addFlash('danger', 'Une erreur s’est produite lors du téléchargement du fichier.');
+            } }
+
+
+
+        ///////////////////////////fin Gestion du téléchargement du fichier PDF   /////////
+
+
+
 
             $user->setRoles(['ROLE_AGENCY']);
 

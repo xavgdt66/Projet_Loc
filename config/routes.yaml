@@ -23,4 +23,9 @@ app_home:
   controller: 'App\Controller\HomeController::index'
   methods: GET
 
+download_pdf:
+    path: '/admin/download-pdf/{id}'
+    controller: 'App\Controller\Admin\UserCrudController::downloadPdf'
+    methods: ['GET']
+
 # Vos autres routes ici...

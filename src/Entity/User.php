@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 //use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use App\Entity\Review;
 
@@ -494,19 +495,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getKbis(): ?string
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    public function getKbis()
     {
         return $this->kbis;
     }
 
-    public function setKbis(string $kbis): static
+    public function setKbis(?string $kbis): void
     {
         $this->kbis = $kbis;
-
-        return $this;
     }
-
+   
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     public function setprofile_picture(string $profile_picture): static
