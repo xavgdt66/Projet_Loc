@@ -22,6 +22,8 @@ use App\Entity\Review;
 #[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    //////////////// AGENCY + LOCATAIRE //////////////////////////////////////////////////////////////////////////////////
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -40,34 +42,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+
+    //////////////// LOCATAIRE //////////////////////////////////////////////////////////////////////////////////
     #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 50)]
     #[ORM\Column(type: "string", length: 50, nullable: true)]
     private ?string $first_name = null;
 
-
     #[ORM\Column(type: "string", length: 50, nullable: true)]
     private ?string $last_name = null;
 
-
-
-
-
-
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{1,10}$/')]
-    #[ORM\Column(type: "integer")]
-    private ?int $telephone = null;
-
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 2, max: 1000)]
-    #[ORM\Column(type: "string", length: 1000)]
-    private ?string $address = null;
-    /////////////////////////////////////////////////
     #[ORM\Column(type: "string", length: 1000, nullable: true)]
-
     private ?string $presentation = null;
-    ///////////////////////////////////////////////////
+
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $employement_status = null;
 
@@ -78,32 +65,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", nullable: true)]
     private ?string $guarantee = null;
 
+    ////////////////////// AGENCY + LOCATAIRE    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #[Assert\Type('integer')]
+    #[Assert\Regex(pattern: '/^[0-9]{1,11}$/')]
+    #[ORM\Column(type: "integer")]
+    private ?int $telephone = null;
+
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 1000)]
+    #[ORM\Column(type: "string", length: 1000)]
+    private ?string $address = null;
+
+    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
+    private ?File $fichierImage;
+
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
+    private ?string $profile_picture = null;
+
+    /////////////////////   AGENCY ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    #[ORM\Column(type: "string", length: 17, nullable: true)]
+    private ?string $carte_professionnelle = null;
+
 
     #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 100)]
     #[ORM\Column(type: "string", length: 100, nullable: true)]
     private ?string $nom_agence = null;
-
-
-    #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $numero_rue = null;
-
-    #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private ?string $nom_rue = null;
-
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{5}$/')]
-    #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $code_postal = null;
-
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 2, max: 60)]
-    #[ORM\Column(type: "string", length: 60, nullable: true)]
-    private ?string $ville = null;
-
-    #[ORM\Column(type: "string", length: 17, nullable: true)]
-    private ?string $carte_professionnelle = null;
-
 
     #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{9}$/')]
@@ -116,110 +104,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
 
-    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
-    private ?File $fichierImage;
+    ////////////SYSTEME DE NOTATION SUR LE PROFIL DES LOCATAIRES MAIS SUBMITTER PAR LES AGENCY ////////////
 
-    #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private ?string $profile_picture = null;
-
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: "Review")]
+    private  $reviews;
 
 
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// Poubelle des variables ///////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    #[Assert\Type('integer')]
+    #[Assert\Regex(pattern: '/^[0-9]{5}$/')]
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $code_postal = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $imageSize = null;
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 60)]
+    #[ORM\Column(type: "string", length: 60, nullable: true)]
+    private ?string $ville = null;
 
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Review::class)]
-    private Collection $reviews;
-
-
-///////////////////////
-
-
-
-
-/////////////////////////////
 
 
 
 
 
-
-    public function __construct()
-    {
-        $this->reviews = new ArrayCollection();
-    }
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $brochureFilename = null;
-
-    public function setBrochureFilename(?string $brochureFilename): self
-    {
-        $this->brochureFilename = $brochureFilename;
-        return $this;
-    }
-
-    public function getBrochureFilename(): ?string
-    {
-        return $this->brochureFilename;
-    }
-
-
-    /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $fichierImage
-     */
-    public function setfichierImage(?File $fichierImage = null): void
-    {
-        $this->fichierImage = $fichierImage;
-
-        if (null !== $fichierImage) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-    }
-
-    public function getfichierImage(): ?File
-    {
-        return $this->fichierImage;
-    }
+    /************************* AGENCY + LOCATAIRE ********************************* */
 
     public function setprofilepicture(?string $profile_picture): void
     {
         $this->profile_picture = $profile_picture;
     }
-
     public function getprofilepicture(): ?string
     {
         return $this->profile_picture;
     }
-
-
-    public function setImageSize(?int $imageSize): void
-    {
-        $this->imageSize = $imageSize;
-    }
-
-    public function getImageSize(): ?int
-    {
-        return $this->imageSize;
-    }
-
-
-
-
 
 
     public function getId(): ?int
@@ -254,18 +179,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles = $this->roles;   // Récupère les rôles de l'utilisateur depuis la propriété $roles
 
-        return array_unique($roles);
+        $roles[] = 'ROLE_USER';  // Garantit que chaque utilisateur a au moins le rôle ROLE_USER
+
+        return array_unique($roles);  // Retourne un tableau unique des rôles de l'utilisateur
+
     }
 
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $this->roles = $roles;   // Affecte les nouveaux rôles fournis à la propriété $roles de l'objet utilisateur
 
-        return $this;
+        return $this;         // Retourne l'instance de la classe sur laquelle cette méthode est appelée
+    }
+
+    /**
+     * Permet de verifier le role des utlisateurs et selon leur role leur donne un action
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
     }
 
     /**
@@ -283,14 +220,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
+
 
     public function isVerified(): bool
     {
@@ -303,6 +233,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /////////////////////   LOCATAIRE  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     public function getFirstName(): ?string
@@ -328,17 +272,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTelephone(): ?string
-    {
-        return $this->telephone;
-    }
 
-    public function setTelephone(?string $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
 
     public function getAddress(): ?string
     {
@@ -400,136 +334,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNomAgence(): ?string
-    {
-        return $this->nom_agence;
-    }
-
-    public function setNomAgence(string $nom_agence): static
-    {
-        $this->nom_agence = $nom_agence;
-
-        return $this;
-    }
-
-    public function getNumeroRue(): ?string
-    {
-        return $this->numero_rue;
-    }
-
-    public function setNumeroRue(?string $numero_rue): self
-    {
-        $this->numero_rue = $numero_rue;
-
-        return $this;
-    }
-
-    public function getNomRue(): ?string
-    {
-        return $this->nom_rue;
-    }
-
-    public function setNomRue(string $nom_rue): static
-    {
-        $this->nom_rue = $nom_rue;
-
-        return $this;
-    }
-
-    public function getCodePostal(): ?string
-    {
-        return $this->code_postal;
-    }
-
-    public function setCodePostal(?string $code_postal): self
-    {
-        $this->code_postal = $code_postal;
-
-        return $this;
-    }
-
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
-
-    public function setVille(string $ville): static
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
-
-    public function getCarteProfessionnelle(): ?string
-    {
-        return $this->carte_professionnelle;
-    }
-
-    public function setCarteProfessionnelle(?string $carte_professionnelle): self
-    {
-        $this->carte_professionnelle = $carte_professionnelle;
-
-        return $this;
-    }
-
-    public function getSiren(): ?string
-    {
-        return $this->siren;
-    }
-
-    public function setSiren(?string $siren): self
-    {
-        $this->siren = $siren;
-
-        return $this;
-    }
-
-    public function getSiret(): ?string
-    {
-        return $this->siret;
-    }
-
-    public function setSiret(?string $siret): self
-    {
-        $this->siret = $siret;
-
-        return $this;
-    }
-//////////////////////////////////////////////////////////////////////////////////////////////////
-    public function getKbis()
-    {
-        return $this->kbis;
-    }
-
-    public function setKbis(?string $kbis): void
-    {
-        $this->kbis = $kbis;
-    }
-   
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    public function setprofile_picture(string $profile_picture): static
-    {
-        $this->profile_picture = $profile_picture;
-
-        return $this;
-    }
-
-    public function getprofile_picture(): ?string
-    {
-        return $this->profile_picture;
-    }
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-
     // Function qui permet de transformer cdi_outside_trial en CDI (hors période d’essai) pour la rendue Twig de profile/index.html.twig
     // Car sinon c'est cdi_outside_trial qui est afficher 
     // Pour afficher sur twig {{ user.readableEmploymentStatus }}
@@ -565,78 +369,188 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $statusMappingsGuarantee[$this->guarantee] ?? 'Statut Inconnu';
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-    // Review related methods
+    public function __construct()
+    {
+        $this->reviews = new ArrayCollection();
+    }
 
     public function getReviews(): Collection
     {
         return $this->reviews;
     }
 
-    /*public function addReview(Review $review): self
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////   AGENCY   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function getNomAgence(): ?string
     {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews->add($review);
-            $review->setUser($this);
-        }
+        return $this->nom_agence;
+    }
+
+    public function setNomAgence(string $nom_agence): static
+    {
+        $this->nom_agence = $nom_agence;
 
         return $this;
+    }
+    public function getCarteProfessionnelle(): ?string
+    {
+        return $this->carte_professionnelle;
+    }
+
+    public function setCarteProfessionnelle(?string $carte_professionnelle): self
+    {
+        $this->carte_professionnelle = $carte_professionnelle;
+
+        return $this;
+    }
+
+    public function getSiren(): ?string
+    {
+        return $this->siren;
+    }
+
+    public function setSiren(?string $siren): self
+    {
+        $this->siren = $siren;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getKbis()
+    {
+        return $this->kbis;
+    }
+
+    public function setKbis(?string $kbis): void
+    {
+        $this->kbis = $kbis;
+    }
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////// POUBELLE  des functions /////////////////////////////////////////////////////////////
+
+    public function getCodePostal(): ?string
+    {
+        return $this->code_postal;
+    }
+
+    public function setCodePostal(?string $code_postal): self
+    {
+        $this->code_postal = $code_postal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    // private ?string $brochureFilename = null;
+
+    /* public function setBrochureFilename(?string $brochureFilename): self
+    {
+        $this->brochureFilename = $brochureFilename;
+        return $this;
+    }
+
+    public function getBrochureFilename(): ?string
+    {
+        return $this->brochureFilename;
     }*/
 
-      /**
-     * Check if the user has a specific role.
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
      *
-     * @param string $role
-     * @return bool
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $fichierImage
      */
-    public function hasRole(string $role): bool
+    public function setfichierImage(?File $fichierImage = null): void
     {
-        return in_array($role, $this->roles, true);
+        $this->fichierImage = $fichierImage;
+
+        if (null !== $fichierImage) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
-     /**
-     * Add a review to the user (only if the user has the "ROLE_LOCATAIRE").
-     *
-     * @param Review $review
-     * @return $this
-     */
-    public function addReview(Review $review): self
+    public function getfichierImage(): ?File
     {
-        // Add the condition to associate reviews only with users having the "ROLE_LOCATAIRE"
-        if ($this->hasRole('ROLE_LOCATAIRE')) {
-            if (!$this->reviews->contains($review)) {
-                $this->reviews->add($review);
-                $review->setUser($this);
-            }
-        }
+        return $this->fichierImage;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    /* public function setprofile_picture(string $profile_picture): static
+    {
+        $this->profile_picture = $profile_picture;
 
         return $this;
     }
 
-
-
-
-    public function removeReview(Review $review): self
+    public function getprofile_picture(): ?string
     {
-        if ($this->reviews->removeElement($review)) {
-            if ($review->getUser() === $this) {
-                $review->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-    
-
-
-
-
-
-
-
+        return $this->profile_picture;
+    }*/
 }

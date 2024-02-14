@@ -17,7 +17,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-//#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class DashboardController extends AbstractDashboardController
 {
     private $userRepository;

@@ -1,63 +1,60 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    
-    access_control:
-       # - { path: ^/admin/validate-user, roles: ROLE_ADMIN } # Autoriser ROLE_ADMIN à accéder à la page de validation
-       # - { path: ^/admin/liste-users, roles: ROLE_ADMIN } # Autoriser ROLE_ADMIN à accéder à la page de liste des utilisateurs
+  # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
+
+  access_control:
+   
+
+      # - { path: ^/admin/validate-user, roles: ROLE_ADMIN } # Autoriser ROLE_ADMIN à accéder à la page de validation
+      # - { path: ^/admin/liste-users, roles: ROLE_ADMIN } # Autoriser ROLE_ADMIN à accéder à la page de liste des utilisateurs
       #  - { path: ^/compte/verification, roles: ROLE_USER, requires_channel: https } # Autoriser ROLE_USER à accéder à la page de vérification en utilisant HTTPS
-       # - { path: ^/account, roles: ROLE_USER } # Autoriser ROLE_USER à accéder aux pages liées au compte
+      # - { path: ^/account, roles: ROLE_USER } # Autoriser ROLE_USER à accéder aux pages liées au compte
 
-        # Ajouter la règle suivante pour refuser l'accès aux utilisateurs non vérifiés pour les autres pages
-        # { path: ^/, roles: IS_AUTHENTICATED_FULLY, allow_if: "user.isVerified() == true" }
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-    providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: app_user_provider
+      # Ajouter la règle suivante pour refuser l'accès aux utilisateurs non vérifiés pour les autres pages
+      # { path: ^/, roles: IS_AUTHENTICATED_FULLY, allow_if: "user.isVerified() == true" }
+  # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+  providers:
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      lazy: true
+      provider: app_user_provider
 
+      custom_authenticator: App\Security\AppCustomAuthenticator
+      logout:
+        path: app_logout
+        # where to redirect after logout
+        # target: app_any_route
 
-            custom_authenticator: App\Security\AppCustomAuthenticator
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
+      remember_me:
+        secret: "%kernel.secret%"
+        lifetime: 604800
+        path: /
+        always_remember_me: true
 
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
-                path: /
-                always_remember_me: true
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#the-firewall
 
-            
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
 
 when@test:
-    security:
-        password_hashers:
-            # By default, password hashers are resource intensive and take time. This is
-            # important to generate secure password hashes. In tests however, secure hashes
-            # are not important, waste resources and increase test times. The following
-            # reduces the work factor to the lowest possible values.
-            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+  security:
+    password_hashers:
+      # By default, password hashers are resource intensive and take time. This is
+      # important to generate secure password hashes. In tests however, secure hashes
+      # are not important, waste resources and increase test times. The following
+      # reduces the work factor to the lowest possible values.
+      Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+        algorithm: auto
+        cost: 4 # Lowest possible value for bcrypt
+        time_cost: 3 # Lowest possible value for argon
+        memory_cost: 10 # Lowest possible value for argon
