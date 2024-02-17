@@ -34,11 +34,19 @@ class ReviewType extends AbstractType
 }
 
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Review::class,
-        ]);
-    }
+public function configureOptions(OptionsResolver $resolver): void
+{
+    $resolver->setDefaults([
+        'data_class' => Review::class,
+        // activer/désactiver la protection CSRF pour ce formulaire
+        'csrf_protection' => true,
+        // le nom du champ HTML masqué qui stocke le jeton
+        'csrf_field_name' => '_token',
+        // une chaîne arbitraire utilisée pour générer la valeur du jeton
+        // utiliser une chaîne différente pour chaque formulaire améliore sa sécurité
+        'csrf_token_id'   => 'review_form',
+
+    ]);
+}
 }
  

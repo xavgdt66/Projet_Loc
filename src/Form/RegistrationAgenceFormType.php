@@ -6,7 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType; 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,17 +20,17 @@ class RegistrationAgenceFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder  
+        $builder
             ->add('email')
             ->add('profilePicture', FileType::class, [
                 'label' => 'Profile Picture',
                 'mapped' => false, // Le champ n'est pas lié à une propriété de l'entité User
                 'required' => false, // Rendre le champ facultatif
-                'constraints' => [ 
+                'constraints' => [
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                            'image/jpeg', 
+                            'image/jpeg',
                             'image/png',
                             'image/gif', // Ajoutez les types de fichiers supplémentaires ici
                         ],
@@ -50,14 +50,14 @@ class RegistrationAgenceFormType extends AbstractType
                 'attr' => ['class' => 'tinymce'],
 
             ])
-          
-            
-            
+
+
+
             ->add('carte_professionnelle', TextType::class, [
                 'attr' => ['class' => 'tinymce'],
 
             ])
-            ->add('siren', TextType::class, [ 
+            ->add('siren', TextType::class, [
                 'attr' => ['class' => 'tinymce'],
 
             ])
@@ -65,7 +65,7 @@ class RegistrationAgenceFormType extends AbstractType
                 'attr' => ['class' => 'tinymce'],
 
             ])
-           /* ->add('kbis', FileType::class, [
+            /* ->add('kbis', FileType::class, [
                 // Set required to true if necessary
                 'required' => true,
                 // Add validation constraints as needed
@@ -103,21 +103,21 @@ class RegistrationAgenceFormType extends AbstractType
                     ])
                 ],
             ])
-          
-    
-      ////////////////////////////   
+
+
+            ////////////////////////////   
 
             ->add('agreeTerms', CheckboxType::class, [
-                                'mapped' => false,
+                'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
             ])
-////////////////////////////
+            ////////////////////////////
             ->add('plainPassword', PasswordType::class, [
-                                // instead of being set onto the object directly,
+                // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -132,16 +132,21 @@ class RegistrationAgenceFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-
-        ;
-        
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            // activer/désactiver la protection CSRF pour ce formulaire
+            'csrf_protection' => true,
+            // le nom du champ HTML masqué qui stocke le jeton
+            'csrf_field_name' => '_token',
+            // une chaîne arbitraire utilisée pour générer la valeur du jeton
+            // utiliser une chaîne différente pour chaque formulaire améliore sa sécurité
+            'csrf_token_id'   => 'register_form_agency',
+
         ]);
     }
 }

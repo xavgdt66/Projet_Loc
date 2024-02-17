@@ -88,10 +88,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $carte_professionnelle = null;
 
 
-    #[Assert\Type('string')]
+    /*#[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 100)]
     #[ORM\Column(type: "string", length: 100, nullable: true)]
-    private ?string $nom_agence = null;
+    private ?string $nom_agence = null;*/
 
     #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{9}$/')]
@@ -130,9 +130,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /*public function __toString(): string
+    {
+        return $this->nom_agence;
+    }*/
+    #[ORM\Column(type: "string", length: 60, nullable: true)]
+    private $nomAgence;
 
+    public function getNomAgence(): ?string
+    {
+        return $this->nomAgence;
+    }
 
+    public function setNomAgence(?string $nomAgence): self
+    {
+        $this->nomAgence = $nomAgence;
 
+        return $this; 
+    }
 
 
     /************************* AGENCY + LOCATAIRE ********************************* */
@@ -392,7 +407,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////   AGENCY   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function getNomAgence(): ?string
+    /*public function getNomAgence(): ?string
     {
         return $this->nom_agence;
     }
@@ -402,7 +417,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->nom_agence = $nom_agence;
 
         return $this;
-    }
+    }*/
     public function getCarteProfessionnelle(): ?string
     {
         return $this->carte_professionnelle;

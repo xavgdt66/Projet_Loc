@@ -9,6 +9,8 @@
     <h1>Reset your password</h1>
 
     {{ form_start(requestForm) }}
+                {{ form_row(registrationForm._token) }} {# Ajout du champ CSRF #}
+
         {{ form_row(requestForm.email) }}
         <div>
             <small>

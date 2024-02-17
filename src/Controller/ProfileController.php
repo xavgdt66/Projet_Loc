@@ -17,6 +17,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\SecurityBundle\Security;
 
+
+
 class ProfileController extends AbstractController
 {
 
@@ -24,7 +26,8 @@ class ProfileController extends AbstractController
     {
     }
 
-    #[Route('/profile/{id}', name: 'app_profile')]
+
+  /*  #[Route('/profile/{id}', name: 'app_profile')]
     public function index(Request $request, User $user, EntityManagerInterface $entityManager, Security $security): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
@@ -51,6 +54,7 @@ class ProfileController extends AbstractController
             } else {
                 // Associer l'utilisateur à l'objet Review
                 $review->setUser($user);
+
 
                 // Enregistrer la nouvelle note
                 $entityManager->persist($review);
@@ -81,8 +85,8 @@ class ProfileController extends AbstractController
         }
 
         // Récupérer l'agence de l'utilisateur
-       // $agenceNom = $entityManager->getRepository(User::class)->findOneBy(['id' => $user->getId()])->getNomAgence();
-$agenceNom = $user->getNomAgence();
+        // $agenceNom = $entityManager->getRepository(User::class)->findOneBy(['id' => $user->getId()])->getNomAgence();
+        $agenceNom = $user->getNomAgence();
 
         return $this->render('profile/index.html.twig', [
             'user' => $user,
@@ -91,14 +95,20 @@ $agenceNom = $user->getNomAgence();
             'totalMonthsPaid' => $totalMonthsPaid,
             'agenceNom' => $agenceNom,
         ]);
-    }
-    /*public function index(Request $request, User $user, EntityManagerInterface $entityManager, Security $security): Response
+    }*/
+
+
+
+    //////////////////////////////////////////////////////////////////////////////// 
+
+    #[Route('/profile/{id}', name: 'app_profile')]
+    public function index(Request $request, User $user, EntityManagerInterface $entityManager, Security $security): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
         if (!$security->isGranted('ROLE_AGENCY') && !$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_home');
-        } 
+        }
 
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
@@ -118,6 +128,10 @@ $agenceNom = $user->getNomAgence();
             } else {
                 // Associer l'utilisateur à l'objet Review
                 $review->setUser($user);
+
+                // Récupérer l'utilisateur courant (l'agence) et l'associer à l'objet Review
+                $currentUser = $this->getUser();
+                $review->setNomAgence($currentUser->getNomAgence()); 
 
                 // Enregistrer la nouvelle note
                 $entityManager->persist($review);
@@ -143,20 +157,30 @@ $agenceNom = $user->getNomAgence();
             if ($interval->d > 0) {
                 $months++; // Considérer les jours partiels comme un mois entier
             }
+
             $totalMonthsPaid += $months;
         }
+
+        // Récupérer l'agence de l'utilisateur
+        $agenceNom = $user->getNomAgence();
 
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
             'reviews' => $reviews,
-            'totalMonthsPaid' => $totalMonthsPaid // Passer cette variable à la vue
+            'totalMonthsPaid' => $totalMonthsPaid,
+            'agenceNom' => $agenceNom,
         ]);
-    }*/
-   
+    }
 
 
-    
+
+
+    //////////////////////////////////////////////////////////////////////////////// 
+
+
+
+
     // Permet a l'admin de modifier les data des users
     /*#[Route('/profile/edit/{id}', name: 'app_profile_edit')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
