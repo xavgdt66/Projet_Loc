@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light " id="test">
 	<div class="container-fluid">
 		<a class="nav-link navmenu" href="/">Avislocataire</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,46 +8,64 @@
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-				<li class="nav-item"> 
+				<li class="nav-item">
 					<a class="nav-link navmenu" href="/">Accueil</a>
 				</li>
+
+				{% if app.user %}
+
+
+					<li class="nav-item">
+						<a class="nav-link navmenu" href="/search">Rechercher un locataire</a>
+					</li>
+
+
+					<li class="nav-item">
+						<a href="/myprofile" class="nav-link navmenu">Mon profil public</a>
+					</li>
+
+				</li>
 				<li class="nav-item">
-					<a class="nav-link navmenu" href="#">Mon compte</a>
+					<a href="/edit-my-profile" class="nav-link navmenu">Editer mon profil</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link navmenu" href="/search">Search</a>
+					<a class="nav-link navmenu" href="{{ path('app_logout') }}">Me déconnecter</a>
 				</li>
 
-				<li class="nav-item">
-					<a class="nav-link navmenu" href="/logout">Me déconnecter</a>
-				</li>
+			{% endif %}
+
+
+			{% if is_granted('ROLE_ADMIN') %}
 				<li class="nav-item">
 					<a class="nav-link navmenu" href="/admin">Admin</a>
+				</li>
+			{% endif %}
+
+			{% if not app.user %}
+				
+				<li class="nav-item">
+					<a href="/login" class="nav-link navmenu">Se connecter</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link navmenu" href="/choice">Créer un compte</a>
 				</li>
-				<li class="nav-item">
-					<a href="/login" class="btn btn-outline-primary">Se connecter</a>
-				</li>
-				<li class="nav-item">
-					<a href="/myprofile" class="nav-link navmenu">Mon profil public</a>
-				</li>
+			{% endif %}
 
-			</li>
-			<li class="nav-item">
-				<a href="/edit-my-profile" class="nav-link navmenu">Editer mon profil</a>
-			</li>
 
 		</ul>
 	</div>
 </div></nav><style>
 .navmenu {
 	font-family: 'Nunito Sans', sans-serif;
+	color: white;
+
+}
+#test{
+	background-color:#1432be;
 
 }
 .navmenu:hover {
-	color: #ec5a13;
+	color: white;
 
 }</style>

@@ -110,7 +110,6 @@ class RegistrationAgenceController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        var_dump($request->files->get('profilePicture'));
 
 
         return $this->render('registration/registeragence.html.twig', [

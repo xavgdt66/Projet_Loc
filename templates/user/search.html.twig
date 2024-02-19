@@ -2,34 +2,45 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                {{ form_start(searchForm, {'attr': {'class': 'form'}}) }}
-                    <div class="form-group">
-                        {{ form_label(searchForm.email) }}
-                        {{ form_widget(searchForm.email, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(searchForm.search) }}
-                        {{ form_widget(searchForm.search, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-                    
-                {{ form_end(searchForm) }}
-            </div>
-        </div>
+	<style>
+		#formsearch {
+			margin-top: 120px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 120px; /* Ajoute une marge en bas du formulaire */
+		}
+		#listusergroup {
+			margin-top: 120px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 120px; /* Ajoute une marge en bas du formulaire */
+		}
+	</style>
+	<h1 class="text-center" >Recherche un locataire</h1> 
+	<h2 class="text-center" >Tout commence par une bonne recherche
 
-        {% if users is not empty %}
-            <div class="mt-4">
-                <ul class="list-group">
-                    {% for user in users %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ user.email }}
-                            <a href="{{ path('app_profile', {'id': user.id}) }}" class="btn btn-primary">Consulter le profil</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
+</h2> 
+
+	<div class="container">
+		{{ form_start(searchForm, {'attr': {'class': 'form', 'id': 'formsearch'}}) }}
+		<div class="input-group">
+			{{ form_widget(searchForm.email, {'attr': {'class': 'form-control mr-sm-2', 'type': 'search', 'placeholder': 'Rechercher un locataire par email', 'aria-label': 'Search'}}) }}
+<div style="margin-left: 10px;"> </div> <!-- Ajoute un espace de 10 pixels entre les deux widgets -->
+
+			<div class="input-group-append">
+				{{ form_widget(searchForm.search, {'attr': {'class': 'btn btn-primary my-2 my-sm-0', 'type': 'submit'}}) }}
+			</div>
+		</div>
+		{{ form_end(searchForm) }}
+
+
+		{% if users is not empty %}
+			<div class="mt-4" id="listusergroup">
+				<ul class="list-group">
+					{% for user in users %}
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							{{ user.email }}
+							<a href="{{ path('app_profile', {'id': user.id}) }}" class="btn btn-primary">Consulter le profil</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
 {% endblock %}

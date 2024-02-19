@@ -4,35 +4,55 @@
 {% endblock %}
 
 {% block body %}
+	<style>
+		#titleconnecter {
+			margin-top: 40px; /* Ajoute une marge en haut du formulaire */
+		}
+		#submitloginform {
+			margin-bottom: 140px; /* Ajoute une marge en haut du formulaire */
+			margin-top: 40px; /* Ajoute une marge en haut du formulaire */
+
+		}
+	</style>
+
+
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-6 offset-md-3">
-    <form action="{{ path('app_login') }}" method="post">
+				<form action="{{ path('app_login') }}" method="post">
 					{% if error %}
-					
-						<h1>L'adresse email et le mot de passe saisis ne correspondent pas </h1>
+						<h1>L'adresse email et le mot de passe saisis ne correspondent pas</h1>
 					{% endif %}
 					{% if app.user %}
 						<div class="mb-3">
 							Vous êtes connecté en tant que
 							{{ app.user.userIdentifier }},
 							<a href="{{ path('app_logout') }}">Déconnexion</a>
-						</div> 
+						</div>
 					{% endif %}
 
-					<h1 class="h3 mb-3 font-weight-normal text-center">Veuillez vous connecter</h1>
-					<label for="inputEmail">Adresse email</label>
-					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+
+					<h1 class="text-center" id="titleconnecter">Veuillez vous connecter</h1>
+					<label for="inputEmail" class="text-center">Adresse email</label>
+					<div class="text-center">
+						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+					</div>
 
 					<label for="inputPassword">Mot de passe</label>
-					<input
-					type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+					<div class="text-center">
 
-					{# Ajouter la protection CSRF #}
+						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+					</div>
+
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<p>
+						<a href="/reset-password" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Mots de passe oublié ?</a>
+					</p>
 
-					<button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+					<button class="btn btn-lg btn-primary btn-block" type="submit" id="submitloginform">Se connecter</button>
 				</form>
+
+
 			</div>
 		</div>
 	</div>

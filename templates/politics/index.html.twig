@@ -3,13 +3,15 @@
 {% block title %}Politique de Confidentialité{% endblock %}
 
 {% block body %}
-    <h2 class="text-center">Politique de Confidentialité</h2>
-    {% if politique %}
-        <div>
-            <!-- Affichez ici les propriétés de l'objet politique -->
-            <p> {{ politique.Pol | raw}}</p>
-        </div>
-    {% else %}
-        <p>Politique de confidentialité non trouvée.</p>
-    {% endif %}
+    <div class="container">
+        <h2 class="text-center">Politique de Confidentialité</h2>
+        {% if politique %}
+            <div>
+                <!-- Affichez ici les propriétés de l'objet politique -->
+                <p>{{ politique.Pol | raw }}</p>
+            </div>
+        {% else %}
+            <p>Politique de confidentialité non trouvée.</p>
+        {% endif %}
+    </div>
 {% endblock %}

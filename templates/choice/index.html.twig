@@ -3,23 +3,50 @@
 {% block title %}Hello ChoiceRegisterController!{% endblock %}
 
 {% block body %}
-<h1> Vous etes ? </h1>
-<div class="row"> 
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Un locataire ?</h5>
-        <a href="/register" class="btn btn-primary">Cliquez-ici</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Une agence ?</h5>
-        <a href="/registeragence" class="btn btn-primary">Cliquez-ici</a>
-      </div>
-    </div>
-  </div>
-</div>
+  
+<style>
+		#spacebuttonchoice {
+			margin-top: 120px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 120px; /* Ajoute une marge en bas du formulaire */
+		}
+		#spacechoice {
+			margin-top: 60px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 20px; /* Ajoute une marge en bas du formulaire */
+		}
+	</style>
+
+
+ 	<h1 class="text-center" id="spacechoice">Comment ça marche ?</h1>
+
+<div class="container" id="spacebuttonchoice" >
+		<div class="row justify-content-center">
+			<div class="col-md-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+          <h5 class="text-center">Un locataire ?</h5>
+                    <div class="d-flex justify-content-center">
+
+          <a href="register" class="btn btn-primary"  >Cliquez-ici</a>
+          					</div>
+
+					</div>
+				</div>
+			</div>
+
+		
+
+			<div class="col-md-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+          <h5 class="text-center">Une agence ?</h5>
+                    <div class="d-flex justify-content-center">
+
+          <a href="/registeragence" class="btn btn-primary" class="text-center" >Cliquez-ici</a>
+          					</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

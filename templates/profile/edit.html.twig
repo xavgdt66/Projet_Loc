@@ -1,10 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<style>
+		#spacefomedit {
+			margin-top: 120px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 120px; /* Ajoute une marge en bas du formulaire */
+		}
+		#spaceh1 {
+			margin-top: 60px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 20px; /* Ajoute une marge en bas du formulaire */
+		}
 
+		#spacebuttoneditform{
+			margin-top: 50px; /* Ajoute une marge en haut du formulaire */
+			margin-bottom: 50px; /* Ajoute une marge en bas du formulaire */
+		}
+	</style>
 	<div class="container">
 		<div class="row justify-content-center">
-			<div class="col-md-8">
+			<div class="col-md-8" id="spacefomedit">
 
 
 				<h1 class="text-center mb-4">Modifier votre Profil</h1>
@@ -161,7 +175,7 @@
 
 
 				<div class="form-group text-center">
-					<button type="submit" class="btn btn-primary">Mettre à jour</button>
+					<button type="submit" class="btn btn-primary" id="spacebuttoneditform">Mettre à jour</button>
 				</div>
 				{{ form_end(form) }}
 

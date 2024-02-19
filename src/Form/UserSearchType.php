@@ -16,9 +16,9 @@ class UserSearchType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'required' => false,
-                'label' => 'Email du locataire'
+                
             ])
-            ->add('search', SubmitType::class, ['label' => 'Rechercher']);
+            ->add('search', SubmitType::class, []);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -31,7 +31,7 @@ class UserSearchType extends AbstractType
             'csrf_field_name' => '_token',
             // une chaîne arbitraire utilisée pour générer la valeur du jeton
             // utiliser une chaîne différente pour chaque formulaire améliore sa sécurité
-            'csrf_token_id'   => 'reset_password',
+            'csrf_token_id'   => 'search_form',
 
         ]);
     }

@@ -3,13 +3,15 @@
 {% block title %}Mentions légales{% endblock %}
 
 {% block body %}
-    <h2 class="text-center">mentions légales</h2>
-    {% if Mentionlegale %}
-        <div>
-            <!-- Affichez ici les propriétés de l'objet politique -->
-            <p> {{ Mentionlegale.mentionlegale | raw}}</p>
-        </div>
-    {% else %}
-        <p>mentions légales non trouvée.</p>
-    {% endif %}
+    <div class="container">
+        <h2 class="text-center">Mentions légales</h2>
+        {% if Mentionlegale %}
+            <div>
+                <!-- Affichez ici les propriétés de l'objet politique -->
+                <p>{{ Mentionlegale.mentionlegale | raw }}</p>
+            </div>
+        {% else %}
+            <p>Mentions légales non trouvée.</p>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -2,7 +2,7 @@
 // src/Controller/UserController.php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Form\UserSearchType;
 
 use App\Repository\UserRepository;
@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
 {
-   /* #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
     #[Route('/admin/liste-users', name: 'liste_users')]
     public function listeUsers(UserRepository $userRepository): Response
     {
@@ -31,7 +31,7 @@ class UserController extends AbstractController
         return $this->render('admin/listeUser.html.twig', [
             'users' => $users
         ]);
-    }*/
+    }
 
 
     #[Route('/search', name: 'search_users')]
@@ -48,8 +48,9 @@ class UserController extends AbstractController
         $users = [];
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $form->getData()['email'];
-            $users = $userRepository->findByEmailAndRole($email, 'ROLE_LOCATAIRE');
+            $email = $form->get('email')->getData();
+
+            $users = $userRepository->findByEmailAndRole($email, 'ROLE_LOCATAIRE'); 
         }
 
         return $this->render('user/search.html.twig', [

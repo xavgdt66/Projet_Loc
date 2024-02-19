@@ -2,37 +2,38 @@
 
 {% block title %}Contactez nous{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        /* Style général du formulaire */
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
 
-        /* Style pour chaque champ du formulaire */
-        form input,
-        form textarea {
-            border: 2px solid #000;   /* Bordure noire autour de chaque champ */
-            padding: 10px;           /* Espacement interne de chaque champ */
-            background-color: #fff382; /* Couleur de fond à l'intérieur de chaque champ */
-        }
 
-        /* Style pour le bouton */
-        .btn {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-        {{ form_widget(form) | raw }}
-        <button class="btn">{{ button_label|default('Envoyer') }}</button>
-    {{ form_end(form) }}
+<style>
+	#titleformcontact {
+		margin-top: 60px; /* Ajoute une marge en haut du formulaire */
+		margin-bottom: 20px; /* Ajoute une marge en bas du formulaire */
+	}
+    #titlesubcontact {
+		margin-top: 20px; /* Ajoute une marge en haut du formulaire */
+		margin-bottom: 20px; /* Ajoute une marge en bas du formulaire */
+	}
+</style>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4" id="titleformcontact">Formulaire de Contact</h1>
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                <div class="form-group mb-3">
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Adresse Email'}}) }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Message'}}) }}
+                </div>
+                <button type="submit" id="titlesubcontact" class="btn btn-primary btn-block">{{ button_label|default('Envoyer') }}</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
