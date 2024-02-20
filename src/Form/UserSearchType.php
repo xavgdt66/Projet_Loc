@@ -24,7 +24,7 @@ class UserSearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => User::class, 
             // activer/désactiver la protection CSRF pour ce formulaire
             'csrf_protection' => true,
             // le nom du champ HTML masqué qui stocke le jeton

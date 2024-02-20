@@ -30,7 +30,7 @@ class ReviewType extends AbstractType
             'label' => 'Commentaire',
             'attr' => ['class' => 'form-control'],
             'required' => false,
-        ]);
+        ]); 
 }
 
 

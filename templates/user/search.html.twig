@@ -12,16 +12,20 @@
 			margin-bottom: 120px; /* Ajoute une marge en bas du formulaire */
 		}
 	</style>
-	<h1 class="text-center" >Recherche un locataire</h1> 
-	<h2 class="text-center" >Tout commence par une bonne recherche
+	<h1 class="text-center">Recherche un locataire</h1>
+	<h2 class="text-center">Tout commence par une bonne recherche
 
-</h2> 
+	</h2>
 
 	<div class="container">
 		{{ form_start(searchForm, {'attr': {'class': 'form', 'id': 'formsearch'}}) }}
+		{{ form_row(searchForm._token) }}
+		{# Ajout du champ CSRF #}
+
 		<div class="input-group">
 			{{ form_widget(searchForm.email, {'attr': {'class': 'form-control mr-sm-2', 'type': 'search', 'placeholder': 'Rechercher un locataire par email', 'aria-label': 'Search'}}) }}
-<div style="margin-left: 10px;"> </div> <!-- Ajoute un espace de 10 pixels entre les deux widgets -->
+			<div style="margin-left: 10px;"></div>
+			<!-- Ajoute un espace de 10 pixels entre les deux widgets -->
 
 			<div class="input-group-append">
 				{{ form_widget(searchForm.search, {'attr': {'class': 'btn btn-primary my-2 my-sm-0', 'type': 'submit'}}) }}

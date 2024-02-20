@@ -23,9 +23,10 @@
 
 				<h1 class="text-center mb-4" id="titleformregister">Inscription locataire</h1>
 
-				{{ form_errors(registrationForm) }}
+				{{ form_errors(registrationForm) }} 
 
 				{{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}  
+            {{ form_row(registrationForm._token) }} {# Ajout du champ CSRF #}  
 
 				{{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
 				{{ form_row(registrationForm.plainPassword, {'label': 'Mots de passe','attr': {'class': 'form-control'} }) }}

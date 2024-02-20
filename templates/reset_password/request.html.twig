@@ -20,6 +20,7 @@
     <div class="text-center">
         <h1 id="titlecheckemail">Réinitialisez votre mot de passe</h1>
         {{ form_start(requestForm) }}
+						            {{ form_row(requestForm._token) }} {# Ajout du champ CSRF #}  
 
         {{ form_row(requestForm.email) }}
         <div>

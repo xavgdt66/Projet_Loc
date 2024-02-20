@@ -174,7 +174,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => User::class, 
             'user_roles' => [],
             // activer/désactiver la protection CSRF pour ce formulaire
             'csrf_protection' => true,
