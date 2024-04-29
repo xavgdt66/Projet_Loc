@@ -27,8 +27,8 @@ class CustomDashboardController extends AbstractDashboardController
     {
         // Logique pour récupérer les données, par exemple, le nombre d'utilisateurs
         $userCount = $this->userRepository->count([]); // le nombre d'utilisateurs
-      $tenantCountLocataire = $this->userRepository->countUsersByRole('ROLE_LOCATAIRE'); // le nombre de locataire 
-      $tenantCountAgence = $this->userRepository->countUsersByRole('ROLE_AGENCY'); // le nombre d'agence 
+        $tenantCountLocataire = $this->userRepository->countUsersByRole('ROLE_LOCATAIRE'); // le nombre de locataire 
+        $tenantCountAgence = $this->userRepository->countUsersByRole('ROLE_AGENCY'); // le nombre d'agence 
 
         // Renvoyer la vue personnalisée avec les données
         return $this->render('admin/statisticalUser.html.twig', [
@@ -38,9 +38,4 @@ class CustomDashboardController extends AbstractDashboardController
 
         ]);
     }
-
-
-
-
-
 }

@@ -88,10 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $carte_professionnelle = null;
 
 
-    /*#[Assert\Type('string')]
-    #[Assert\Length(min: 2, max: 100)]
-    #[ORM\Column(type: "string", length: 100, nullable: true)]
-    private ?string $nom_agence = null;*/
+    
 
     #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{9}$/')]
@@ -557,15 +554,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->updatedAt;
     }
 
-    /* public function setprofile_picture(string $profile_picture): static
+    public function __toString(): string // // Convertie en string getEmail pour le crud admin de movie 
     {
-        $this->profile_picture = $profile_picture;
+        return $this->getFirstName();
 
-        return $this;
+
     }
-
-    public function getprofile_picture(): ?string
-    {
-        return $this->profile_picture;
-    }*/
 }

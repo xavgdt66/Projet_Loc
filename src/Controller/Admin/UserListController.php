@@ -19,7 +19,6 @@ class UserListController extends AbstractController
     public function listeUsers(UserRepository $userRepository): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            // Redirigez l'utilisateur vers la route app_home s'il n'est pas administrateur
             return $this->redirectToRoute('app_home');
         }
 

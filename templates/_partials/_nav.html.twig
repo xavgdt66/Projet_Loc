@@ -1,71 +1,60 @@
-<nav class="navbar navbar-expand-lg navbar-light " id="test">
-	<div class="container-fluid">
-		<a class="nav-link navmenu" href="/">Avislocataire</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<nav class="navbar navbar-expand-lg navbar-light" id="backgrouncolornavbar">
+    <div class="container-fluid">
+        <a class="nav-link navmenu" href="/">Meilleurslocataires</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="menuItems"></ul>
+        </div>
+    </div>
+</nav>
 
-				<li class="nav-item">
-					<a class="nav-link navmenu" href="/">Accueil</a>
-				</li>
-
-				{% if app.user %}
-
-
-					<li class="nav-item">
-						<a class="nav-link navmenu" href="/search">Rechercher un locataire</a>
-					</li>
-
-
-					<li class="nav-item">
-						<a href="/myprofile" class="nav-link navmenu">Mon profil public</a>
-					</li>
-
-				</li>
-				<li class="nav-item">
-					<a href="/edit-my-profile" class="nav-link navmenu">Editer mon profil</a>
-				</li>
-
-				<li class="nav-item">
-					<a class="nav-link navmenu" href="{{ path('app_logout') }}">Me déconnecter</a>
-				</li>
-
-			{% endif %}
-
-
-			{% if is_granted('ROLE_ADMIN') %}
-				<li class="nav-item">
-					<a class="nav-link navmenu" href="/admin">Admin</a>
-				</li>
-			{% endif %}
-
-			{% if not app.user %}
-				
-				<li class="nav-item">
-					<a href="/login" class="nav-link navmenu">Se connecter</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link navmenu" href="/choice">Créer un compte</a>
-				</li>
-			{% endif %}
-
-
-		</ul>
-	</div>
-</div></nav><style>
-.navmenu {
-	font-family: 'Nunito Sans', sans-serif;
-	color: white;
-
+<style>
+.navmenu { font-family: "Work Sans", sans-serif; color: black;}
+#backgrouncolornavbar { 
+background-color:white;
+box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3); 
 }
-#test{
-	background-color:#1432be;
+.navbar-logo, .navbar-link { display: flex; align-items: center; }
+</style>
 
-}
-.navmenu:hover {
-	color: white;
+<script>
+const menuUl = document.getElementById('menuItems');
 
-}</style>
+const menuItems = [
+    { text: 'Accueil', link: '/' },
+    {% if app.user and ('admin' in app.user.roles or 'agency' in app.user.roles) %}
+        { text: 'Rechercher un locataire', link: '/search' },
+    {% endif %}    
+    { text: 'Mon profil public', link: '/myprofile', condition: {{ app.user ? 'true' : 'false' }} },
+    { text: 'Editer mon profil', link: '/edit-my-profile', condition: {{ app.user ? 'true' : 'false' }} },
+    { text: 'Me déconnecter', link: '{{ path('app_logout') }}', condition: {{ app.user ? 'true' : 'false' }} },
+    { text: 'Admin', link: '/admin', condition: '{{ is_granted('ROLE_ADMIN') }}' },
+    { text: 'Se connecter', link: '/login', condition: {{ app.user ? 'false' : 'true' }} },
+    { text: 'Créer un compte', link: '/choice', condition: {{ app.user ? 'false' : 'true' }} }
+];
+
+menuItems.forEach(item => {
+    if (item.condition) {
+        const li = document.createElement('li');
+        li.classList.add('nav-item');
+        const a = document.createElement('a');
+        a.classList.add('nav-link', 'navmenu', 'navbar-link');
+        a.href = item.link;
+        if (item.text === 'Se connecter' || item.text === 'Créer un compte') {
+            // Ajouter une classe pour les liens Se connecter et Créer un compte
+            a.classList.add('navbar-link');
+        }
+        if (item.text === 'Se connecter') {
+            // Ajouter le symbole de personne avant le lien "Se connecter"
+            a.innerHTML = `<span class="material-symbols-outlined">person</span> ${item.text}`;
+        } else {
+            a.textContent = item.text;
+        }
+        li.appendChild(a);
+        menuUl.appendChild(li);
+    }
+});
+</script>

@@ -6,17 +6,16 @@ use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface; // Importation correcte
-use App\Repository\ReviewRepository;
+use App\Repository\ReviewRepository; 
 
 
 #[ORM\Entity]
 class Review
 {
-    // Assurez-vous d'avoir un ID pour cette entité
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: "integer")]
+    private ?int $id = null;
 
     #[ORM\Column(type: 'datetime')]
     private $startDate;
@@ -32,13 +31,20 @@ class Review
 
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private $nom_agence;
+    private $nom_agence; 
 
     ////////////////////////////////////////////////////////////////////////////////////
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
     // Getters et setters
 
+
+ 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+    
 
     public function getUser() {
         return $this->user;
@@ -64,10 +70,6 @@ class Review
 
 
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getStartDate(): ?\DateTimeInterface
     {

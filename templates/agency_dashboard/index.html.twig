@@ -1,0 +1,18 @@
+{# templates/agency_dashboard/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <h1>Mes avis</h1>
+    {% if reviews is empty %}
+        <p>Aucun avis trouvé.</p>
+    {% else %}
+        <ul>
+            {% for review in reviews %}
+                <li>{{ review.nom_agence }} - {{ review.comment }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

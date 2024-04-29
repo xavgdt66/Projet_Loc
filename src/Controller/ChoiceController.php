@@ -14,12 +14,10 @@ class ChoiceController extends AbstractController
     #[Route('/choice', name: 'app_choice')]
     public function index(UserInterface $user = null): Response
     {
-        // Si l'utilisateur est connecté, redirigez-le vers une autre page ou affichez un contenu spécifique
         if ($user instanceof User && !$user->isVerified()) {
-            return $this->redirectToRoute('page_non_verifiee');
+            return $this->redirectToRoute('app_home');
         }
 
-        // Si l'utilisateur n'est pas connecté, affichez la page de choix
         return $this->render('choice/index.html.twig', [
             'controller_name' => 'ChoiceController',
         ]);

@@ -25,7 +25,8 @@
 					</div>
 					<div class="card-body">
 						{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-						            {{ form_row(form._token) }} {# Ajout du champ CSRF #}  
+						{{ form_row(form._token) }}
+						{# Ajout du champ CSRF #}
 
 						{{ form_widget(form) }}
 						<button type="submit" class="btn btn-primary">Envoyer l'avis</button>
@@ -78,7 +79,8 @@ form.style.display = 'none';
 	</div>
 
 {% endif %}{% endif %}<section>
-<div class="container py-5">
+<div
+	class="container py-5">
 	{# Champs pour le profil des agences et locataire en bas de l'image de profil #}
 	<div class="row">
 		<div class="col-lg-4">
@@ -197,8 +199,8 @@ form.style.display = 'none';
 		</div>
 	</div>
 </div></div></section><style>.profile-picture {
-	width: 350px; /* Définissez la largeur souhaitée */
-	height: 350px; /* Hauteur égale à la largeur pour un carré */
-	border-radius: 10%; /* Bords arrondis */
-	object-fit: cover; /* Conserve les proportions de l'image */
+	width: 350px;
+	height: 350px;
+	border-radius: 10%;
+	object-fit: cover;
 }</style>{% endblock %}

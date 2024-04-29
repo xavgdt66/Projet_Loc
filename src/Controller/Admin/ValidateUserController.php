@@ -23,23 +23,23 @@ class ValidateUserController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
-    
+
     #[Route('/admin/validate-user/{id}', name: 'admin_validate_user')]
     public function validateUser($id): RedirectResponse
-{
-    if (!$this->isGranted('ROLE_ADMIN')) {
-        // Redirigez l'utilisateur vers la route app_home s'il n'est pas administrateur
-        return $this->redirectToRoute('app_home');
-    }
-    $user = $this->userRepository->find($id);
-    if ($user && !$user->isVerified()) {
-        $user->setIsVerified(true);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
 
-        $this->addFlash('success', 'L\'utilisateur a été validé avec succès.');
-    }
+            return $this->redirectToRoute('app_home');
+        }
+        $user = $this->userRepository->find($id);
+        if ($user && !$user->isVerified()) {
+            $user->setIsVerified(true);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
-    return $this->redirectToRoute('admin_liste_users'); // Utilisez le nom de la route que vous avez créé
-}
+            $this->addFlash('success', 'L\'utilisateur a été validé avec succès.');
+        }
+
+        return $this->redirectToRoute('admin_liste_users');
+    }
 }

@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\Politiquedeconfidentilaite;
-use App\Entity\Mentionlegale; 
-
+use App\Entity\Mentionlegale;
+use App\Entity\Review;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -22,7 +22,6 @@ class DashboardController extends AbstractDashboardController
 {
     private $userRepository;
 
-    // Si vous utilisez EntityManager, remplacez UserRepository par EntityManagerInterface
     public function __construct(private AdminUrlGenerator $adminUrlGenerator, UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -31,9 +30,8 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        // Vérifiez si l'utilisateur a le rôle ADMIN
         if (!$this->isGranted('ROLE_ADMIN')) {
-            // Redirigez l'utilisateur vers la route app_home s'il n'est pas administrateur
+            
             return $this->redirectToRoute('app_home');
         }
 
@@ -79,6 +77,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Statistique', 'fa fa-dashboard', 'admin_custom_dashboard');
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
         yield MenuItem::linkToRoute('ValidateUsers', 'fa fa-users','admin_liste_users');
+        yield MenuItem::linkToCrud('Avis', 'fa-solid fa-star', Review::class);
 
         yield MenuItem::linkToCrud('Politique de confidentilaite', 'fa-solid fa-book-open', Politiquedeconfidentilaite::class);
         yield MenuItem::linkToCrud('Mention legale', 'fa-solid fa-book-open', Mentionlegale::class);
