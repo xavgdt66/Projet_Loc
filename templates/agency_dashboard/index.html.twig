@@ -5,14 +5,23 @@
 {% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
-    <h1>Mes avis</h1>
-    {% if reviews is empty %}
-        <p>Aucun avis trouvé.</p>
-    {% else %}
-        <ul>
+    <h1>Mes Avis</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for review in reviews %}
-                <li>{{ review.nom_agence }} - {{ review.comment }}</li>
+                <tr>
+                    <td>{{ review.nomAgence }}</td> 
+                    <td>{{ review.comment }}</td>
+                    <td>{{ review.startDate|date('Y-m-d H:i:s') }}</td>
+                </tr>
             {% endfor %}
-        </ul>
-    {% endif %}
+        </tbody>
+    </table>
 {% endblock %}

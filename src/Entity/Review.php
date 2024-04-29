@@ -1,75 +1,58 @@
 <?php
-//src/Entity/Review.php
+// src/Entity/Review.php
 namespace App\Entity;
-use App\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface; // Importation correcte
-use App\Repository\ReviewRepository; 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass:"App\Repository\ReviewRepository")]
+ 
 class Review
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
-    private ?int $id = null;
+    #[ORM\Column]
+    private $id;
 
-    #[ORM\Column(type: 'datetime')]
-    private $startDate;
 
-    #[ORM\Column(type: 'datetime')]
-    private $endDate;
-
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reviews')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "reviews")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private $user;
 
 
-    #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private $nom_agence; 
+    #[ORM\Column(type: "datetime")]
+    private $startDate;
 
-    ////////////////////////////////////////////////////////////////////////////////////
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: "datetime")]
+    private $endDate;
+
+
+    #[ORM\Column(type: "text", nullable: true)]
     private $comment;
-    // Getters et setters
 
 
- 
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private $nomAgence;
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
-    
 
-    public function getUser() {
+    public function getUser(): ?User
+    {
         return $this->user;
     }
 
-    public function setUser($user) { 
+    public function setUser(?User $user): self
+    {
         $this->user = $user;
+
+        return $this;
     }
-
-    public function getNomAgence() {
-        return $this->nom_agence;
-    }
-
-    public function setNomAgence($nom_agence) {
-        $this->nom_agence = $nom_agence;
-    }
-
-
-
-
-
-
-
-
-
 
     public function getStartDate(): ?\DateTimeInterface
     {
@@ -95,9 +78,6 @@ class Review
         return $this;
     }
 
-
-
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -106,6 +86,18 @@ class Review
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getNomAgence(): ?string
+    {
+        return $this->nomAgence;
+    }
+
+    public function setNomAgence(?string $nomAgence): self
+    {
+        $this->nomAgence = $nomAgence;
 
         return $this;
     }

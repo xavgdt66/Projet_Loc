@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -11,12 +10,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-//use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use App\Entity\Review;
-
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[Vich\Uploadable]
@@ -42,8 +36,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[Assert\Type('integer')]
+    #[Assert\Regex(pattern: '/^[0-9]{1,11}$/')]
+    #[ORM\Column(type: "integer")]
+    private ?int $telephone = null;
 
-    //////////////// LOCATAIRE //////////////////////////////////////////////////////////////////////////////////
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 1000)]
+    #[ORM\Column(type: "string", length: 1000)]
+    private ?string $address = null;
+
+    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
+    private ?File $fichierImage;
+
+    #[ORM\Column(type: "string", length: 555, nullable: true)]
+    private ?string $profile_picture = null;
+
+
+    ##################################################################### LOCATAIRE #####################################################################
     #[Assert\Type('string')]
     #[Assert\Length(min: 2, max: 50)]
     #[ORM\Column(type: "string", length: 50, nullable: true)]
@@ -65,30 +75,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", nullable: true)]
     private ?string $guarantee = null;
 
-    ////////////////////// AGENCY + LOCATAIRE    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{1,11}$/')]
-    #[ORM\Column(type: "integer")]
-    private ?int $telephone = null;
 
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 2, max: 1000)]
-    #[ORM\Column(type: "string", length: 1000)]
-    private ?string $address = null;
-
-    #[Vich\UploadableField(mapping: "profil_picture", fileNameProperty: "profile_picture", size: "imageSize")]
-    private ?File $fichierImage;
-
-    #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private ?string $profile_picture = null;
-
-    /////////////////////   AGENCY ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///  AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY
 
     #[ORM\Column(type: "string", length: 17, nullable: true)]
     private ?string $carte_professionnelle = null;
-
-
-    
 
     #[Assert\Type('integer')]
     #[Assert\Regex(pattern: '/^[0-9]{9}$/')]
@@ -101,36 +92,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", length: 555, nullable: true)]
     private ?string $kbis = null;
 
-    ////////////SYSTEME DE NOTATION SUR LE PROFIL DES LOCATAIRES MAIS SUBMITTER PAR LES AGENCY ////////////
+
+
+
+    //////////// SYSTEME DE NOTATION SUR LE PROFIL DES LOCATAIRES MAIS SUBMITTER PAR LES AGENCY ////////////
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: "Review")]
     private  $reviews;
 
 
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////// Poubelle des variables ///////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    #[Assert\Type('integer')]
-    #[Assert\Regex(pattern: '/^[0-9]{5}$/')]
-    #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $code_postal = null;
-
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 2, max: 60)]
-    #[ORM\Column(type: "string", length: 60, nullable: true)]
-    private ?string $ville = null;
-
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    /*public function __toString(): string
-    {
-        return $this->nom_agence;
-    }*/
+
     #[ORM\Column(type: "string", length: 60, nullable: true)]
     private $nomAgence;
 
@@ -143,11 +117,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->nomAgence = $nomAgence;
 
-        return $this; 
+        return $this;
     }
 
 
-    /************************* AGENCY + LOCATAIRE ********************************* */
+    /************************* AGENCY + LOCATAIRE **********************************/
 
     public function setprofilepicture(?string $profile_picture): void
     {
@@ -258,7 +232,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /////////////////////   LOCATAIRE  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ##################################################################### LOCATAIRE #####################################################################
 
 
     public function getFirstName(): ?string
@@ -381,11 +355,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $statusMappingsGuarantee[$this->guarantee] ?? 'Statut Inconnu';
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 
     public function __construct()
     {
@@ -397,24 +367,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reviews;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 
-    /////////////////////   AGENCY   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*public function getNomAgence(): ?string
-    {
-        return $this->nom_agence;
-    }
+    ///  AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY AGENCY
 
-    public function setNomAgence(string $nom_agence): static
-    {
-        $this->nom_agence = $nom_agence;
-
-        return $this;
-    }*/
     public function getCarteProfessionnelle(): ?string
     {
         return $this->carte_professionnelle;
@@ -463,54 +419,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
 
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////// POUBELLE  des functions /////////////////////////////////////////////////////////////
-
-    public function getCodePostal(): ?string
-    {
-        return $this->code_postal;
-    }
-
-    public function setCodePostal(?string $code_postal): self
-    {
-        $this->code_postal = $code_postal;
-
-        return $this;
-    }
-
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
-
-    public function setVille(string $ville): static
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
-
-
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    // private ?string $brochureFilename = null;
-
-    /* public function setBrochureFilename(?string $brochureFilename): self
-    {
-        $this->brochureFilename = $brochureFilename;
-        return $this;
-    }
-
-    public function getBrochureFilename(): ?string
-    {
-        return $this->brochureFilename;
-    }*/
-
+   
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -554,10 +463,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->updatedAt;
     }
 
-    public function __toString(): string // // Convertie en string getEmail pour le crud admin de movie 
+    /// @@@@@@@@@@@@ EASYADMIN @@@@@@@@@@@@ ///
+    public function __toString(): string // Convertie en string getEmail pour le crud admin de movie 
     {
         return $this->getFirstName();
-
-
     }
 }
