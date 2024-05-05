@@ -23,16 +23,19 @@ box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
 <script>
 const menuUl = document.getElementById('menuItems');
 
-const menuItems = [
+const menuItems = [ 
     { text: 'Accueil', link: '/' },
-    {% if app.user and ('admin' in app.user.roles or 'agency' in app.user.roles) %}
-        { text: 'Rechercher un locataire', link: '/search' },
-    {% endif %}    
+  
     { text: 'Mon profil public', link: '/myprofile', condition: {{ app.user ? 'true' : 'false' }} },
     { text: 'Editer mon profil', link: '/edit-my-profile', condition: {{ app.user ? 'true' : 'false' }} },
     { text: 'Me déconnecter', link: '{{ path('app_logout') }}', condition: {{ app.user ? 'true' : 'false' }} },
+    
     { text: 'Admin', link: '/admin', condition: '{{ is_granted('ROLE_ADMIN') }}' },
-    { text: 'Se connecter', link: '/login', condition: {{ app.user ? 'false' : 'true' }} },
+
+    { text: 'Vos avis', link: '/dashboardavis', condition: '{{ is_granted('ROLE_AGENCY') }}' },
+    { text: 'Rechercher un locataire', link: '/search', condition:'{{ is_granted('ROLE_AGENCY') }}' },
+
+    { text: 'Se connecter', link: '/login', condition:          {{ app.user ? 'false' : 'true' }} },
     { text: 'Créer un compte', link: '/choice', condition: {{ app.user ? 'false' : 'true' }} }
 ];
 
@@ -44,11 +47,9 @@ menuItems.forEach(item => {
         a.classList.add('nav-link', 'navmenu', 'navbar-link');
         a.href = item.link;
         if (item.text === 'Se connecter' || item.text === 'Créer un compte') {
-            // Ajouter une classe pour les liens Se connecter et Créer un compte
             a.classList.add('navbar-link');
         }
         if (item.text === 'Se connecter') {
-            // Ajouter le symbole de personne avant le lien "Se connecter"
             a.innerHTML = `<span class="material-symbols-outlined">person</span> ${item.text}`;
         } else {
             a.textContent = item.text;

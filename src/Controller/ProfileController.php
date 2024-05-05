@@ -99,6 +99,8 @@ class ProfileController extends AbstractController
 
 
 
+
+
     // Cette route permet aux users de voir leur profil public meme si il ne sont pas verifier 
     #[Route('/myprofile', name: 'app_my_profile')]
     public function myProfile(EntityManagerInterface $entityManager): Response

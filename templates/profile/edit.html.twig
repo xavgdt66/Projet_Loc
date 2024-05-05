@@ -1,186 +1,127 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<style>
-		#spacefomedit {
-			margin-top: 120px; /* Ajoute une marge en haut du formulaire */
-			margin-bottom: 120px; /* Ajoute une marge en bas du formulaire */
-		}
-		#spaceh1 {
-			margin-top: 60px; /* Ajoute une marge en haut du formulaire */
-			margin-bottom: 20px; /* Ajoute une marge en bas du formulaire */
-		}
-
-		#spacebuttoneditform{
-			margin-top: 50px; /* Ajoute une marge en haut du formulaire */
-			margin-bottom: 50px; /* Ajoute une marge en bas du formulaire */
+	<style>
+		body {
+			background-color: #f5f5f5;
 		}
 	</style>
+
 	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-md-8" id="spacefomedit">
+		<h1>Modifier votre Profil</h1>
 
+		{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+		{{ form_row(form._token) }}
 
-				<h1 class="text-center mb-4">Modifier votre Profil</h1>
+		<div
+			class="row">
+			{# Début formulaire locataire #}
 
-				{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-				    {{ form_row(form._token) }}
-
-				{# Début formulaire locataire #}
-
-
-				<div class="form-group">
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.email, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.email) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.plainPassword, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.plainPassword) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.first_name, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.first_name, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.first_name) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.last_name, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.last_name, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.last_name) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.presentation, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.presentation, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.presentation) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.telephone, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.telephone) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.address, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.address) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.employement_status, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.employement_status, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.employement_status) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.net_income, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.net_income, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.net_income) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.guarantee, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.guarantee, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.guarantee) }}
-					{% endif %}
-
-					{% if 'ROLE_LOCATAIRE' in app.user.roles %}
-						{{ form_label(form.brochure, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.brochure, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.brochure) }}
-					{% endif %}
-
+			{% if 'ROLE_LOCATAIRE' in app.user.roles %}
+				<div class="col-md-6">
+					{{ form_label(form.first_name, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.first_name, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.first_name) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.last_name, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.last_name, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.last_name) }}
 				</div>
 
-				{# Fin  formulaire locataire #}
-
-
-				{# Début   formulaire agence #}
-				<div class="form-group">
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.email, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.email) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.plainPassword, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.plainPassword) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.telephone, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.telephone) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.address, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.address) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.nom_agence, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.nom_agence, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.nom_agence) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.carte_professionnelle, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.carte_professionnelle, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.carte_professionnelle) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.siren, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.siren, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.siren) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.siret, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.siret, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.siret) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.kbis, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.kbis, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.kbis) }}
-					{% endif %}
-
-					{% if 'ROLE_AGENCY' in app.user.roles %}
-						{{ form_label(form.brochure, null, {'label_attr': {'class': 'control-label'}}) }}
-						{{ form_widget(form.brochure, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.brochure) }}
-					{% endif %}
-
+				<div class="col-md-12 mb-3 mt-3">
+					{{ form_label(form.presentation, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.presentation, { attr: { class: 'form-control', rows: "3"}}) }}
+					{{ form_errors(form.presentation) }}
 				</div>
 
-				{# Fin  formulaire agence  #}
 
-
-
-
-
-
-				<div class="form-group text-center">
-					<button type="submit" class="btn btn-primary" id="spacebuttoneditform">Mettre à jour</button>
+				<div class="col-md-6">
+					{{ form_label(form.telephone, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.telephone) }}
 				</div>
-				{{ form_end(form) }}
+				<div class="col-md-6">
+					{{ form_label(form.address, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.address) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.employement_status, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.employement_status, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.employement_status) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.net_income, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.net_income, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.net_income) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.guarantee, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.guarantee, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.guarantee) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.brochure, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.brochure, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.brochure) }}
+				</div>
+			{% endif %}
 
-			</div>
+			{# Fin formulaire locataire #}
 		</div>
-	</div>
 
+		<div
+			class="row">
+			{# Début formulaire agence #}
+
+			{% if 'ROLE_AGENCY' in app.user.roles %}
+				<div class="col-md-6">
+					{{ form_label(form.telephone, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.telephone) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.address, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.address) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.nom_agence, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.nom_agence, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.nom_agence) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.carte_professionnelle, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.carte_professionnelle, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.carte_professionnelle) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.siren, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.siren, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.siren) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.siret, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.siret, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.siret) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.kbis, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.kbis, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.kbis) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.brochure, null, {'label_attr': {'class': 'control-label'}}) }}
+					{{ form_widget(form.brochure, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.brochure) }}
+				</div>
+			{% endif %}
+
+			{# Fin formulaire agence #}
+		</div>
+
+		<button type="submit" class="btn btn-primary">Enregistrer mes informations</button>
+		{{ form_end(form) }}
+	</div>
 {% endblock %}

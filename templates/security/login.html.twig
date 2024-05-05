@@ -10,7 +10,20 @@
  <style>
         .loginFormWorksans {
             font-family: "Work Sans", sans-serif;
-*        }
+      }
+
+      #loginsubmit {
+        background-color: #1432BE;
+        color:white;
+        border-color : #1432BE;
+      }
+
+      #registera{
+      color:red;
+
+      }
+    
+
     </style>
 
 <section class="vh-100 d-flex justify-content-center align-items-center">
@@ -55,15 +68,15 @@
                         </div>
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                        <div class="pt-1 mb-4">
-                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block loginFormWorksans" type="submit">Se connecter</button>
+                        <div class="pt-1 mb-4" >
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block loginFormWorksans" type="submit"  id="loginsubmit">Se connecter</button>
                         </div>
 
                         <p class="small mb-5 pb-lg-2">
                             <a href="/reset-password" class="text-muted loginFormWorksans">J’ai oublié mon mot de passe</a>
                         </p>
                         <p>Vous n’avez pas de compte ?
-                            <a href="/register" class="link-info loginFormWorksans">Inscrivez-vous</a>
+                            <a href="/register" class="link-info loginFormWorksans" id="registera">Inscrivez-vous</a>
                         </p>
 
                     </form>

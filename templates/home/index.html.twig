@@ -1,10 +1,117 @@
-{# templates/home/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Meilleurs locataires{% endblock %}
+{% block title %}Meilleurs locataires
+{% endblock %}
 
 {% block body %}
-    <h1 class="text-center" id="spaceh1">Comment ça marche ?</h1>
+	<h1 class="text-center" id="spaceh1">Comment ça marche ?</h1>
 
-   
+	<div class="container-fluid bg-light mt-5 ">
+		<div class="row">
+
+			<div class="col-md-6">
+				<div class="container d-flex justify-content-center align-items-center h-100">
+					<div>
+						<h2 class="text-center">Lorem Ipsum</h2>
+						<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							    Nullam felis nisl, scelerisque non arcu sit amet,.
+							    Nulla scelerisque fringilla mauris, et porta est congue at.
+
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="container">
+					<div class="container">
+
+						<div class="text-center">
+							<img src="{{ asset('images/home/3home.webp') }}" class="rounded img-fluid image-in-card" alt="...">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+	{# This will be a comment #}
+
+
+	<div class="container-fluid">
+		<div class="row">
+
+
+			<div class="col-md-6">
+				<div class="container">
+					<div class="container">
+
+						<div class="text-center">
+							<img src="{{ asset('images/home/2home.png') }}" class="rounded img-fluid image-in-card" alt="...">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-md-6">
+				<div class="container d-flex justify-content-center align-items-center h-100">
+					<div>
+						<h2 class="text-center">Lorem Ipsum</h2>
+						<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+														                         Nullam felis nisl, scelerisque non arcu sit amet,.
+														                         Nulla scelerisque fringilla mauris, et porta est congue at.
+
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	{# This will be a comment #}
+
+	<div class="container-fluid bg-light mb-5 ">
+		<div class="row">
+
+			<div class="col-md-6">
+				<div class="container d-flex justify-content-center align-items-center h-100">
+					<div>
+						<h2 class="text-center">Lorem Ipsum</h2>
+						<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+														                         Nullam felis nisl, scelerisque non arcu sit amet,.
+														                         Nulla scelerisque fringilla mauris, et porta est congue at.
+
+						</p>
+						<div class="text-center">
+							<button type="button" class="btn btn-primary ">Primary</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="container">
+					<div class="container">
+
+						<div class="text-center">
+							<img src="{{ asset('images/home/1home.jpg') }}" class="rounded img-fluid image-in-card" alt="...">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+	<style>
+		.image-in-card {
+			max-width: 80%;
+			margin: 20px; /* Ajoute une marge de 10px autour de l'image */
+		}
+	</style>
 {% endblock %}

@@ -1,27 +1,26 @@
-{# templates/agency_dashboard/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
-    <h1>Mes Avis</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for review in reviews %}
+    <h1 class="mt-4 mb-3">Les avis que vous avez postés</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>{{ review.nomAgence }}</td> 
-                    <td>{{ review.comment }}</td>
-                    <td>{{ review.startDate|date('Y-m-d H:i:s') }}</td>
+                    <th>Contenu</th>
+                    <th>Profil de l'utilisateur</th> 
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody> 
+                {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.comment }}</td>
+                        {% set user = review.getUser() %} 
+                        <td><a href="{{ path('app_profile', {'id': user.id}) }}" class="btn btn-primary">Voir le profil</a></td> 
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
