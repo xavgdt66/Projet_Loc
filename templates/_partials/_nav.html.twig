@@ -36,7 +36,7 @@ const menuItems = [
     { text: 'Rechercher un locataire', link: '/search', condition:'{{ is_granted('ROLE_AGENCY') }}' },
 
     { text: 'Se connecter', link: '/login', condition:          {{ app.user ? 'false' : 'true' }} },
-    { text: 'Créer un compte', link: '/choice', condition: {{ app.user ? 'false' : 'true' }} }
+    { text: 'Créer un compte', link: '/register', condition: {{ app.user ? 'false' : 'true' }} }
 ];
 
 menuItems.forEach(item => {

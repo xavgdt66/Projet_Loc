@@ -6,15 +6,72 @@
         #titleformregister {
             margin-top: 60px;
             margin-bottom: 20px;
+                        font-family: "Work Sans", sans-serif;
+
         }
         #btnsubregister {
             margin-top: 20px;
             margin-bottom: 20px;
+            
+        }
+        .left-image {
+            width: calc(100% - 40px); 
+            height: 100vh;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            margin: 0 auto; 
+        }
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            padding: 0;
+            overflow: hidden;
+        }
+        .right-column {
+            padding: 20px;
+        }
+
+        #pagelocataire{
+                      font-family: "Work Sans", sans-serif;
+
+        }
+        #ctaPro{
+          box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3); 
+          background-color:white;
+
+        }
+
+        #btnregister{
+            background-color: #1432BE;
+        color:white;
+        border-color : #1432BE;
+        }
+
+        #btnproregister{
+            background-color: #1432BE;
+        color:white;
+        border-color : #1432BE;
         }
     </style>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
+
+    <div class="container-fluid" id="pagelocataire">
+        <div class="row">
+            <div class="col-md-6 p-0 left-column">
+                <!-- Card -->
+                <div class="card text-center  mb-5" id="ctaPro">
+                    <div class="card-body">
+                        <p class="card-text">Vous êtes une agence immobilière ? </p>
+                        <a href="/registeragence" class="btn btn-primary" id="btnproregister">M'inscrire</a>
+                    </div>
+                </div>
+                <!-- Your image and h1 title -->
+                <img src="{{ asset('images/Registerlocataire/LocationRegister.jpg') }}" alt="Locataire Image 1" class="img-fluid left-image">
+            </div>
+            <div class="col-md-6 right-column">
+                <h1 id="titleformregister" class="mb-5 text-uppercase">Inscription locataire</h1>
                 {% for flash_error in app.flashes('verify_email_error') %}
                     <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
                 {% endfor %}
@@ -22,119 +79,75 @@
                 {{ form_errors(registrationForm) }}
                 {{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
                 {{ form_row(registrationForm._token) }}
-            </div>
-        </div>
-    </div>
 
-    <section >
-        <div class="container py-5 ">
-            <div class="row d-flex justify-content-center align-items-center ">
-                <div class="col">
-                    <div class="card card-registration my-4 h-100">
-                        <div class="row g-0">
-                            <div class="col-xl-6 d-flex align-items-center justify-content-center">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp" alt="Sample photo" class="img-fluid" style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"/>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card-body p-md-5 text-black">
-                                    <h3 class="mb-5 text-uppercase">Inscription locataire</h3>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                {{ form_row(registrationForm.email, {'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1m'}}) }}
-                                                <label class="form-label" for="form3Example1m">Email</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                {{ form_row(registrationForm.plainPassword, {'label': 'Mots de passe', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1n'}}) }}
-                                                <label class="form-label" for="form3Example1n">Mots de passe</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                {{ form_row(registrationForm.first_name, {'label': 'Prénom','attr': {'class': 'form-control'}}) }}
-                                                <label class="form-label" for="form3Example1m">Prénom</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                {{ form_row(registrationForm.last_name, {'label': 'Nom','attr': {'class': 'form-control'}}) }}
-                                                <label class="form-label" for="form3Example1n">Nom de famille</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        {{ form_row(registrationForm.address, {'label': 'Adresse', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
-                                        <label class="form-label" for="form3Example8">Adresse</label>
-                                    </div>
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        {{ form_row(registrationForm.telephone, {'label': 'Telephone', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
-                                        <label class="form-label" for="form3Example8">Telephone</label>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                {{ form_row(registrationForm.employement_status, {'label': 'Statut','attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1m'}}) }}
-                                                <label class="form-label" for="form3Example1m">Statut</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <div data-mdb-input-init class="form-outline">
-                                                {{ form_row(registrationForm.net_income, {'label': 'Revenus nets (avant impôts)/Mois', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1n'}}) }}
-                                                <label class="form-label" for="form3Example1n">Revenus nets</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        {{ form_row(registrationForm.presentation, {'label': 'Présentation', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
-                                        <label class="form-label" for="form3Example8">Présentation</label>
-                                    </div>
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        {{ form_row(registrationForm.guarantee, {'label': 'Garantie', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
-                                        <label class="form-label" for="form3Example8">Garantie</label>
-                                    </div>
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        {{ form_row(registrationForm.profilePicture, {'label': 'Profile Picture', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
-                                        <label class="form-label" for="form3Example8">Profile Picture</label>
-                                    </div>
-
-                                    {{ form_row(registrationForm.agreeTerms, {'label': "J'accepte les conditions générales", 'attr': {'class': 'form-check'}}) }}
-
-                                    <div class="d-grid gap-2" id="btnsubregister">
-                                        <button type="submit" class="btn btn-primary btn-block">Register</button>
-                                    </div>
-
-                                </div>
-                            </div>
+                <!-- Form fields -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                            {{ form_row(registrationForm.email, {'label': 'Email','attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1m'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                            {{ form_row(registrationForm.plainPassword, {'label': 'Mots de passe', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1n'}}) }}
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                            {{ form_row(registrationForm.first_name, {'label': 'Prénom','attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                            {{ form_row(registrationForm.last_name, {'label': 'Nom','attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                    {{ form_row(registrationForm.address, {'label': 'Adresse', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                    {{ form_row(registrationForm.telephone, {'label': 'Téléphone', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                            {{ form_row(registrationForm.employement_status, {'label': 'Statut','attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1m'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                            {{ form_row(registrationForm.net_income, {'label': 'Revenus nets (avant impôts)/Mois', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example1n'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                    {{ form_row(registrationForm.presentation, {'label': 'Présentation', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                    {{ form_row(registrationForm.guarantee, {'label': 'Garantie', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                    {{ form_row(registrationForm.profilePicture, {'label': 'Photo de profil', 'attr': {'class': 'form-control form-control-lg', 'id': 'form3Example8'}}) }}
+                </div>
+
+                {{ form_row(registrationForm.agreeTerms, {'label': "J'accepte les conditions générales", 'attr': {'class': 'form-check'}}) }}
+
+                <!-- Submit button -->
+                <div class="d-grid gap-2" id="btnsubregister">
+                    <button type="submit" class="btn btn-primary btn-block" id="btnregister">S'inscrire</button>
+                </div>
+                {{ form_end(registrationForm) }}
             </div>
         </div>
-        {{ form_end(registrationForm) }}
-
-    </section>
-
-    <style>
-        .card-registration .select-input.form-control[readonly]:not([disabled]) {
-            font-size: 1rem;
-            line-height: 2.15;
-            padding-left: 0.75em;
-            padding-right: 0.75em;
-        }
-        .card-registration .select-arrow {
-            top: 13px;
-        }
-    </style>
+    </div>
 {% endblock %}
