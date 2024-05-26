@@ -1,206 +1,212 @@
 {% extends 'base.html.twig' %}
-{% block title %}Profile
-	{{ user.firstname }}
-	{{ user.lastname }}
+
+{% block title %}
+Profile - {{ user.firstname }} {{ user.lastname }}
 {% endblock %}
+
 {% block body %}
 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AGENCY') %}
-	{# Supposons que 'targetUser' est l'utilisateur pour lequel le formulaire est destiné #}
-	{% if 'ROLE_LOCATAIRE' in user.roles %}
+    {% if 'ROLE_LOCATAIRE' in user.roles %}
 
+        <!-- Afficher le nombre total de mois de loyers payés -->
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8 text-center">
+                <h3 style="color: green;">Nombre total de mois de loyers payés : {{ totalMonthsPaid }}</h3>
+            </div>
+        </div>
+        <button id="toggleFormButton">Noter les loyers du locataire</button>
+        <div class="row justify-content-center" style="display:none;" id="myForm">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Envoyer un avis</strong>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                        {{ form_row(form._token) }}
+                        {{ form_widget(form) }}
+                        <button type="submit" class="btn btn-primary">Envoyer l'avis</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById('toggleFormButton').addEventListener('click', function () {
+                var form = document.getElementById('myForm');
+                if (form.style.display === 'none' || form.style.display === '') {
+                    form.style.display = 'block';
+                } else {
+                    form.style.display = 'none';
+                }
+            });
+        </script>
 
-		<!-- Afficher le nombre total de mois de loyers payés -->
-		<div class="row justify-content-center mb-3">
-			<div class="col-md-8 text-center">
-				<h3 style="color: green;">Nombre total de mois de loyers payés :
-					{{ totalMonthsPaid }}</h3>
-			</div>
-		</div>
-		<button id="toggleFormButton">Noter les loyers du locataire</button>
-		<div class="row justify-content-center" style="display:none;" id="myForm">
-			<div class="col-md-8">
-				<div class="card">
-					<div class="card-header">
-						<strong>Envoyer un avis</strong>
-					</div>
-					<div class="card-body">
-						{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-						{{ form_row(form._token) }}
-						{# Ajout du champ CSRF #}
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h2 class="text-center">Avis</h2>
+                <div class="reviews">
+                    {% for review in reviews %}
+                        <div class="review card mb-3">
+                            <div class="card-body">
+                                <p><strong>Date d'entrée du locataire (date indiquée sur le bail):</strong> {{ review.startDate|date('d/m/Y') }}</p>
+                                <p><strong>Date de fin du bail:</strong> {{ review.endDate|date('d/m/Y') }}</p>
+                                <p><strong>Commentaire:</strong> {{ review.comment }}</p>
+                                <p><strong>Publier par l'agence:</strong> {{ review.nomagence }}</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center">Aucun avis disponible pour cet utilisateur.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
-						{{ form_widget(form) }}
-						<button type="submit" class="btn btn-primary">Envoyer l'avis</button>
-						{{ form_end(form) }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<script>
-			document.getElementById('toggleFormButton').addEventListener('click', function () {
-var form = document.getElementById('myForm');
-if (form.style.display === 'none' || form.style.display === '') {
-form.style.display = 'block';
-} else {
-form.style.display = 'none';
-}
-});
-		</script>
-		<div class="row mt-5">
-			<div class="col-md-12">
-				<h2 class="text-center">Avis</h2>
-				<div class="reviews">
-					{% for review in reviews %}
-						<div class="review card mb-3">
-							<div class="card-body">
-								<p>
-									<strong>Date d'entrée du locataire (date indiquée sur le bail):</strong>
-									{{ review.startDate|date('d/m/Y') }}</p>
-								<p>
-									<strong>Date de fin du bail:</strong>
-									{{ review.endDate|date('d/m/Y') }}</p>
-								<p>
-									<strong>Commentaire:</strong>
-									{{ review.comment }}</p>
+    {% endif %}
+{% endif %}
 
-								<p>
-									<strong>Publier par l'agence:</strong>
-									{{ review.nomagence }}
+<section>
+    <div class="container py-5">
+        <!-- Boutons de partage social -->
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8 text-center">
+                <h3>Partager ce profil</h3>
+                <div class="social-share-buttons">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank">
+                        <button class="btn btn-primary">Partager sur Facebook</button>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ app.request.uri }}&text=Découvrez le profil de {{ user.firstname }} {{ user.lastname }}" target="_blank">
+                        <button class="btn btn-info">Partager sur Twitter</button>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ app.request.uri }}&title=Profil de {{ user.firstname }} {{ user.lastname }}&summary=Découvrez le profil de {{ user.firstname }} {{ user.lastname }}" target="_blank">
+                        <button class="btn btn-secondary">Partager sur LinkedIn</button>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-								</p>
-								<!-- Afficher d'autres informations comme la note moyenne, etc. -->
-							</div>
-						</div>
-					{% else %}
-						<p class="text-muted text-center">Aucun avis disponible pour cet utilisateur.</p>
-					{% endfor %}
-				</div>
-			</div>
-		</div>
-	</div>
+        <!-- Champs pour le profil des agences et locataires en bas de l'image de profil -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="{{ asset('/images/products/' ~ user.getprofilepicture()) }}" alt="avatar" class="profile-picture">
+                        <p class="text-muted mb-1">{{ user.email }}</p>
+                        <p class="text-muted mb-4">{{ user.Address }}</p>
+                        {% if 'ROLE_AGENCY' in user.roles %}
+                            <p class="text-muted mb-4">Agence</p>
+                        {% endif %}
+                        {% if 'ROLE_LOCATAIRE' in user.roles %}
+                            <p class="text-muted mb-4">Locataire</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
-{% endif %}{% endif %}<section>
-<div
-	class="container py-5">
-	{# Champs pour le profil des agences et locataire en bas de l'image de profil #}
-	<div class="row">
-		<div class="col-lg-4">
-			<div class="card mb-4">
-				<div class="card-body text-center">
-					<img src="{{ asset('/images/products/' ~ user.getprofilepicture()) }}" alt="avatar" class="profile-picture">
-					<p class="text-muted mb-1">{{ user.email }}</p>
-					<p class="text-muted mb-4">{{ user.Address }}</p>
-					{% if 'ROLE_AGENCY' in user.roles %}
-						<p class="text-muted mb-4">Agence</p>
-					{% endif %}
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {% if 'ROLE_LOCATAIRE' in user.roles %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Nom et prénom</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.lastname }} {{ user.firstname }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Présentation</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.presentation }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Status</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.readableEmploymentStatus }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Revenue</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.netincome }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Garantie</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.getReadableGuarante }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
 
-					{% if 'ROLE_LOCATAIRE' in user.roles %}
-						<p class="text-muted mb-4">Locataire</p>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-		{# Champs pour le profil des locataires #}
+                        {% if 'ROLE_AGENCY' in user.roles %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Nom agence</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.nomagence }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Numéro de carte professionnelle</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.carteprofessionnelle }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Siren</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.siren }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Siret</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.siret }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-		<div class="col-lg-8">
-			<div class="card mb-4">
-				<div class="card-body">
-					{% if 'ROLE_LOCATAIRE' in user.roles %}
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Nom et prénom</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">
-									{{ user.lastname }}
-									{{ user.firstname }}</p>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Présentation</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.presentation }}</p>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Status</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.readableEmploymentStatus }}</p>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Revenue</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.netincome }}</p>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Garantie</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.getReadableGuarante }}</p>
-							</div>
-						</div>
-					{% endif %}
-
-					{# Champs pour le profil des agences #}
-					{% if 'ROLE_AGENCY' in user.roles %}
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Nom agence</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">
-									{{ user.nomagence }}
-								</p>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Numéro de carte professionnelle</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.carteprofessionnelle  }}</p>
-							</div>
-						</div>
-						<hr>
-
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Siren</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.siren }}</p>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3">
-								<p class="mb-0">Siret</p>
-							</div>
-							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ user.siret }}</p>
-							</div>
-						</div>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-	</div>
-</div></div></section><style>.profile-picture {
-	width: 350px;
-	height: 350px;
-	border-radius: 10%;
-	object-fit: cover;
-}</style>{% endblock %}
+<style>
+    .profile-picture {
+        width: 350px;
+        height: 350px;
+        border-radius: 10%;
+        object-fit: cover;
+    }
+    .social-share-buttons button {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
