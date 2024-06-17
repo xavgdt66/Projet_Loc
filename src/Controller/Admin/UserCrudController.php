@@ -110,7 +110,6 @@ class UserCrudController extends AbstractCrudController
             EmailField::new('email'),
             TextField::new('password')->hideOnIndex(),
             BooleanField::new('is_verified', 'Utilisateur verifier'),
-            TextField::new('nom_rue', 'Street Name'),
 
             TextField::new('Kbis', 'PDF') // Champ pour le PDF
                 ->formatValue(function ($value, $entity) {
@@ -133,9 +132,6 @@ class UserCrudController extends AbstractCrudController
             TextareaField::new('presentation')->setRequired(false), // peut etre vide via setRequired(false)
             IntegerField::new('net_income', 'Net Income'),
             TextField::new('nom_agence', 'Agency Name'),
-            IntegerField::new('numero_rue', 'Street Number'),
-            IntegerField::new('code_postal', 'Postal Code'),
-            TextField::new('ville', 'City'),
             IntegerField::new('carte_professionnelle', 'Professional Card Number'),
             IntegerField::new('siren'),
             IntegerField::new('siret'),

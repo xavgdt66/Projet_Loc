@@ -3,24 +3,67 @@
 {% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
-    <h1 class="mt-4 mb-3">Les avis que vous avez postés</h1>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Contenu</th>
-                    <th>Profil de l'utilisateur</th> 
-                </tr>
-            </thead>
-            <tbody> 
-                {% for review in reviews %}
+<div class="container my-5">
+    <h1 class="mt-4 mb-3 text-center">Les avis que vous avez postés</h1>
+    
+    <form method="get" action="{{ path('dashboard_avis') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Rechercher par email" value="{{ searchTerm }}">
+            <button class="btn btn-primary" type="submit">Rechercher</button>
+        </div>
+    </form>
+
+    {% if pagination.getTotalItemCount == 0 %}
+        <p class="text-center">Email introuvable dans vos avis.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle mb-0 bg-white">
+                <thead class="bg-light">
                     <tr>
-                        <td>{{ review.comment }}</td>
-                        {% set user = review.getUser() %} 
-                        <td><a href="{{ path('app_profile', {'id': user.id}) }}" class="btn btn-primary">Voir le profil</a></td> 
+                        <th>Email du locataire</th>
+                        <th>Commentaire</th>
+                        <th>Profil de l'utilisateur</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {% for review in pagination.items %}
+                        {% set user = review.getUser() %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                        <p class="text-muted mb-0">{{ user.email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="mt-2">{{ review.comment }}</p>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_profile', {'id': user.id}) }}" class="btn btn-primary" id="btnc">Cliquez-ici</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    h1, h2, p, button {
+        font-family: 'Work Sans', sans-serif;
+        color: black;
+    }
+    #btnc {
+        font-family: 'Work Sans', sans-serif;
+        background-color: #1432BE;
+        color: white;
+        border-color: #1432BE;
+    }
+</style>
 {% endblock %}
